@@ -1,6 +1,6 @@
-from  flask_sqlalchemy import SQLAlchemy
+from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy_serializer import SerializerMixin
-from sqlalchemy import MetaData,CheckConstraint
+from sqlalchemy import MetaData
 from sqlalchemy.orm import validates, relationship
 
 
@@ -44,7 +44,7 @@ class Pet(db.Model,SerializerMixin):
     pet_type=db.Column(db.String, nullable=False)
     breed=db.Column(db.String, nullable=False)
     age = db.Column(db.Integer,nullable=False)
-    shelter_id=db.Column(db.Integer,db.ForeignKey('shelters.id'))
+    shelter_id=db.Column(db.Integer, db.ForeignKey('shelters.id'))
 
     adoptions=db.relationship('Adoption',back_populates='pet')
     shelter=db.relationship('Shelter', back_populates='pets')
@@ -56,10 +56,10 @@ class Pet(db.Model,SerializerMixin):
         return name
     
     @validates('type')
-    def validate_type(self,key,type):
-        if not type:
+    def validate_type(self,key,pet_type):
+        if not pet_type:
             raise ValueError('Pet type is required.')
-        return type
+        return pet_type
 
     @validates('breed')
     def validate_breed(self,key,breed):
@@ -98,8 +98,8 @@ class Adoption(db.Model,SerializerMixin):
     __tablename__='adoptions'
 
     id=db.Column(db.Integer, primary_key=True)
-    user_id=db.Column(db.Integer, db.ForeignKey('users.id', nullable=False))
-    pet_id=db.Column(db.Integer, db.ForeignKey('pets.id',nullable=False))
+    user_id=db.Column(db.Integer, db.ForeignKey('users.id'))
+    pet_id=db.Column(db.Integer, db.ForeignKey('pets.id'))
     adoption_date=db.Column(db.String)
     comments=db.Column(db.String)
     
