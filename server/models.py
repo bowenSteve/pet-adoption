@@ -2,6 +2,7 @@ from  flask_sqlalchemy import SQLAlchemy
 from sqlalchemy_serializer import SerializerMixin
 from sqlalchemy import MetaData,CheckConstraint
 from sqlalchemy.orm import validates, relationship
+import re
 
 
 metadata = MetaData(
@@ -29,11 +30,14 @@ class User (db.Model,SerializerMixin):
 
     @validates('email')
     def validate_email(self,key,email):
-        if '@' not in email:
-            raise ValueError('Email address is required')
+        email_regex = r'^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$'
+        if not  re.match(email_regex, email):
+            raise ValueError(f'Invalid email address:{email}')
         return email
+         
 
-
+    def __repr__(self):
+        return f'<User {self.name}, {self.email}>'
 
 class Pet(db.Model,SerializerMixin):
     __tablename__='pets'
@@ -70,6 +74,9 @@ class Pet(db.Model,SerializerMixin):
             raise ValueError('Pet age must be a positive number.')
         return age
 
+
+    def __repr__(self):
+        return f'<{self.name}, {self.type}, {self.breed}, {self.age}>'
 class Shelter(db.Model,SerializerMixin):
     __tablename__='shelters'
 
@@ -89,6 +96,9 @@ class Shelter(db.Model,SerializerMixin):
         if not location:
             raise ValueError('Location is required.')
         return location
+
+    def __repr__(self):
+        return f'<{self.name}, {self.location}>'
 
 class Adoption(db.Model,SerializerMixin):
     __tablename__='adoptions'
