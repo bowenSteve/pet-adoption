@@ -18,6 +18,7 @@ class User (db.Model,SerializerMixin):
     id=db.Column(db.Integer, primary_key=True)
     name=db.Column(db.String, nullable=False)
     email=db.Column(db.String, unique=True,nullable=False)
+
     adoptions=db.relationship('Adoption',back_populates='user')
 
     @validates('name')
@@ -44,6 +45,7 @@ class Pet(db.Model,SerializerMixin):
     breed=db.Column(db.String, nullable=False)
     age = db.Column(db.Integer,nullable=False)
     shelter_id=db.Column(db.Integer,db.ForeignKey('shelters.id'))
+
     adoptions=db.relationship('Adoption',back_populates='pet')
 
     @validates('name')
@@ -76,6 +78,7 @@ class Shelter(db.Model,SerializerMixin):
     id=db.Column(db.Integer, primary_key=True)
     name=db.Column(db.String,nullable=False)
     location=db.Column(db.String, nullable=False)
+    
     pets=db.relationship('Pet', back_populates='shelter')
 
     @validates('name')
