@@ -62,7 +62,7 @@ class Pet(db.Model,SerializerMixin):
     def validate_breed(self,key,breed):
         if not breed:
             raise ValueError('Pet breed if required.')
-        return brees    
+        return breed    
     
     @validates('age')
     def validate_age(self,key,age):
