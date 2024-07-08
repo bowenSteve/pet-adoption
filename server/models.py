@@ -21,6 +21,8 @@ class User (db.Model,SerializerMixin):
 
     adoptions=db.relationship('Adoption',back_populates='user')
 
+    serialize_rules = ('-adoptions.user',)
+
     @validates('name')
     def validate_name(self,key,name):
         if not name:
@@ -48,6 +50,8 @@ class Pet(db.Model,SerializerMixin):
 
     adoptions=db.relationship('Adoption',back_populates='pet')
     shelter=db.relationship('Shelter', back_populates='pets')
+
+    serialize_rules = ('-adoptions.pet', '-shelter.pets',)
 
     @validates('name')
     def validate_name(self,key,name):
@@ -82,6 +86,8 @@ class Shelter(db.Model,SerializerMixin):
     
     pets=db.relationship('Pet', back_populates='shelter')
 
+    serialize_rules = ('-pets.shelter',)
+
     @validates('name')
     def validate_name(self,key,name):
         if not name:
@@ -105,6 +111,8 @@ class Adoption(db.Model,SerializerMixin):
     
     user=db.relationship('User', back_populates='adoptions')
     pet=db.relationship('Pet',back_populates='adoptions')
+
+    serialize_rules = ('-user.adoptions', '-pet.adoptions',)
 
     @validates('adoption_date')
     def validates_date(self,key,adoption_date):
