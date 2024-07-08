@@ -40,6 +40,8 @@ class Pet(db.Model,SerializerMixin):
 
     id=db.Column(db.Integer, primary_key=True)
     name=db.Column(db.String,nullable=False)
+    pet_type=db.Column(db.String, nullable=False)
+    breed=db.Column(db.String, nullable=False)
     age = db.Column(db.Integer,nullable=False)
     shelter_id=db.Column(db.Integer,db.ForeignKey('shelters.id'))
     adoptions=db.relationship('Adoption',back_populates='pet')
@@ -49,6 +51,18 @@ class Pet(db.Model,SerializerMixin):
         if not name:
             raise ValueError('Pet name is required.')
         return name
+    
+    @validates('type')
+    def validate_type(self,key,type):
+        if not type:
+            raise ValueError('Pet type is required.')
+        return type
+
+    @validates('breed')
+    def validate_breed(self,key,breed):
+        if not breed:
+            raise ValueError('Pet breed if required.')
+        return brees    
     
     @validates('age')
     def validate_age(self,key,age):
