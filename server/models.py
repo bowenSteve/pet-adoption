@@ -47,6 +47,7 @@ class Pet(db.Model,SerializerMixin):
     shelter_id=db.Column(db.Integer,db.ForeignKey('shelters.id'))
 
     adoptions=db.relationship('Adoption',back_populates='pet')
+    shelter=db.relationship('Shelter', back_populates='pets')
 
     @validates('name')
     def validate_name(self,key,name):
@@ -99,7 +100,7 @@ class Adoption(db.Model,SerializerMixin):
     id=db.Column(db.Integer, primary_key=True)
     user_id=db.Column(db.Integer, db.ForeignKey('users.id', nullable=False))
     pet_id=db.Column(db.Integer, db.ForeignKey('pets.id',nullable=False))
-    adoption_date=db.Column(db.Date,nullable=False)
+    adoption_date=db.Column(db.String)
     comments=db.Column(db.String)
     
     user=db.relationship('User', back_populates='adoptions')
