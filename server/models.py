@@ -1,6 +1,6 @@
-from  flask_sqlalchemy import SQLAlchemy
+from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy_serializer import SerializerMixin
-from sqlalchemy import MetaData,CheckConstraint
+from sqlalchemy import MetaData
 from sqlalchemy.orm import validates, relationship
 
 
@@ -18,7 +18,10 @@ class User (db.Model,SerializerMixin):
     id=db.Column(db.Integer, primary_key=True)
     name=db.Column(db.String, nullable=False)
     email=db.Column(db.String, unique=True,nullable=False)
+
     adoptions=db.relationship('Adoption',back_populates='user')
+
+    serialize_rules = ('-adoptions.user',)
 
     @validates('name')
     def validate_name(self,key,name):
@@ -43,8 +46,12 @@ class Pet(db.Model,SerializerMixin):
     pet_type=db.Column(db.String, nullable=False)
     breed=db.Column(db.String, nullable=False)
     age = db.Column(db.Integer,nullable=False)
-    shelter_id=db.Column(db.Integer,db.ForeignKey('shelters.id'))
+    shelter_id=db.Column(db.Integer, db.ForeignKey('shelters.id'))
+
     adoptions=db.relationship('Adoption',back_populates='pet')
+    shelter=db.relationship('Shelter', back_populates='pets')
+
+    serialize_rules = ('-adoptions.pet', '-shelter.pets',)
 
     @validates('name')
     def validate_name(self,key,name):
@@ -53,10 +60,10 @@ class Pet(db.Model,SerializerMixin):
         return name
     
     @validates('type')
-    def validate_type(self,key,type):
-        if not type:
+    def validate_type(self,key,pet_type):
+        if not pet_type:
             raise ValueError('Pet type is required.')
-        return type
+        return pet_type
 
     @validates('breed')
     def validate_breed(self,key,breed):
@@ -76,7 +83,10 @@ class Shelter(db.Model,SerializerMixin):
     id=db.Column(db.Integer, primary_key=True)
     name=db.Column(db.String,nullable=False)
     location=db.Column(db.String, nullable=False)
+    
     pets=db.relationship('Pet', back_populates='shelter')
+
+    serialize_rules = ('-pets.shelter',)
 
     @validates('name')
     def validate_name(self,key,name):
@@ -94,13 +104,15 @@ class Adoption(db.Model,SerializerMixin):
     __tablename__='adoptions'
 
     id=db.Column(db.Integer, primary_key=True)
-    user_id=db.Column(db.Integer, db.ForeignKey('users.id', nullable=False))
-    pet_id=db.Column(db.Integer, db.ForeignKey('pets.id',nullable=False))
-    adoption_date=db.Column(db.Date,nullable=False)
+    user_id=db.Column(db.Integer, db.ForeignKey('users.id'))
+    pet_id=db.Column(db.Integer, db.ForeignKey('pets.id'))
+    adoption_date=db.Column(db.String)
     comments=db.Column(db.String)
     
     user=db.relationship('User', back_populates='adoptions')
     pet=db.relationship('Pet',back_populates='adoptions')
+
+    serialize_rules = ('-user.adoptions', '-pet.adoptions',)
 
     @validates('adoption_date')
     def validates_date(self,key,adoption_date):
