@@ -23,6 +23,9 @@ api = Api(app)
 def index():
     return "<h1>Pawfect Match</h1>"
 
+#Login
+#SignUp
+
 class Users(Resource):
     
     def get(self):
@@ -55,7 +58,72 @@ class Pets(Resource):
 
         return pets_list, 200
 
+    def post(self):
+
+        data = request.get_json()
+
+        new_pet = Pet(
+            name=data['name'],
+            pet_type=data['pet_type'],
+            breed=data['breed'],
+            age=data['age'],
+            location=data['location'],
+        )
+
+        db.session.add(new_pet)
+        db.session.commit()
+
+        response_dict = new_pet.to_dict()
+
+        return response_dict, 201
+
 api.add_resource(Pets, '/pets')
+
+class PetsByID(Resource):
+
+    def get(self, id):
+
+        pet = Pet.query.filter_by(id=id).first()
+
+        if pet:
+            response_dict = pet.to_dict()
+
+            return response_dict, 200
+        else:
+            return {"error": "Pet not found"}, 404
+
+    def patch(self, id):
+
+        pet = Pet.query.filter_by(id=id).first()
+
+        if pet:
+
+            for attr in request.form:
+                setattr(pet, attr, request.form[attr])
+
+            db.session.add(pet)
+            db.session.commit()
+
+            response_dict = pet.to_dict()
+
+            return response_dict, 200
+        else:
+            return {"error": "Pet not found"}, 404
+
+    def delete(self, id):
+
+        pet = Pet.query.filter_by(id=id).first()
+
+        if pet:
+           db.session.delete(pet)
+           db.session.commit()
+
+           return {"message": "Pet successfully deleted"}, 204
+        else:
+            return {"error": "Pet not found"}, 404
+
+api.add_resource(PetsByID, '/pets/<int:id>')
+
 
 class Adoptions(Resource):
 

@@ -122,6 +122,4 @@ class Adoption(db.Model,SerializerMixin):
         if not adoption_date:
             raise ValueError('Adoption date required')
         return adoption_date
-
-
-
+        
