@@ -1,10 +1,12 @@
+import React from 'react';
+import { Link } from 'react-router-dom';
 
-function Navbar(){
-    return (
-      <div>
+function Navbar() {
+  return (
+    <div>
       <nav className="navbar navbar-expand-lg navbar-light bg-light">
         <a className="navbar-brand" href="#">
-          <h2 className="ms-3 text-color">Pawfect Match</h2>
+          <Link className='link' to={"/"}><h2 className="ms-3 text-color ">Pawfect Match</h2></Link>
         </a>
         <button
           className="navbar-toggler"
@@ -18,23 +20,14 @@ function Navbar(){
           <span className="navbar-toggler-icon"></span>
         </button>
 
-        <div className="collapse navbar-collapse" id="navbarNav">
-          <div className="mx-auto d-flex search-container">
-            <input
-              className="form-control search-bar"
-              type="search"
-              placeholder="Search"
-              aria-label="Search"
-            />
-            <button className="btn btn-outline-success ml-2" type="submit">
-              Search
-            </button>
+        <div className="collapse navbar-collapse justify-content-between" id="navbarNav">
+          <div className="navbar-nav">
+            {/* This div is empty intentionally to create spacing on the left side */}
           </div>
-
-          <ul className="navbar-nav ml-auto">
+          <ul className="navbar-nav">
             <li className="nav-item">
               <a
-                className="nav-link"
+                className="nav-link d-flex justify-content-center"
                 href="#"
                 data-bs-toggle="offcanvas"
                 data-bs-target="#offcanvasLogin"
@@ -46,8 +39,6 @@ function Navbar(){
           </ul>
         </div>
       </nav>
-
-  
 
       <div
         className="offcanvas offcanvas-end"
@@ -89,17 +80,18 @@ function Navbar(){
                 id="password"
               />
             </div>
-            <button type="submit" className="btn btn-primary custom-login-btn">
+            <button type="submit" className="btn btn-primary custom-login-btn login-btn" style={{ width: '200px' }}>
               Login
             </button>
             <div className="mt-2">
-            <span>Don't have an account?</span>
-            <a className="ms-1" href="">Create Account</a>
+              <span>Don't have an account?</span>
+              <a className="ms-1" href="">Create Account</a>
             </div>
           </form>
         </div>
       </div>
     </div>
-    )
+  );
 }
-export default Navbar
+
+export default Navbar;
