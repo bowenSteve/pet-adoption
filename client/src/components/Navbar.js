@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 function Navbar() {
   return (
     <div>
-      <nav className="navbar navbar-expand-lg navbar-light bg-light">
+      <nav className="navbar navbar-expand-lg navbar-light navbar-color">
         <a className="navbar-brand" href="#">
           <Link className='link' to={"/"}><h2 className="ms-3 text-color ">Pawfect Match</h2></Link>
         </a>
