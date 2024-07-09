@@ -1,5 +1,5 @@
 from flask_migrate import Migrate
-from models import db, User, Pet, Shelter, Adoption
+from models import db, User, Pet, Adoption
 from flask import Flask, request, make_response, jsonify
 from flask_restful import Api, Resource
 import os
@@ -32,9 +32,11 @@ class Users(Resource):
 
     def post(self):
 
+        data = request.get_json()
+
         new_user = User(
-            name=request.form['name'],
-            email=request.form['email'],
+            name=data['name'],
+            email=data['email'],
         )
 
         db.session.add(new_user)
@@ -54,15 +56,6 @@ class Pets(Resource):
         return pets_list, 200
 
 api.add_resource(Pets, '/pets')
-
-class Shelters(Resource):
-
-    def get(self):
-        shelters_list = [shelter.to_dict() for shelter in Shelter.query.all()]
-
-        return shelters_list, 200
-
-api.add_resource(Shelters, '/shelters')
 
 class Adoptions(Resource):
 

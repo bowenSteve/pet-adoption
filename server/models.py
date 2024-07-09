@@ -50,12 +50,11 @@ class Pet(db.Model,SerializerMixin):
     pet_type=db.Column(db.String, nullable=False)
     breed=db.Column(db.String, nullable=False)
     age = db.Column(db.Integer,nullable=False)
-    shelter_id=db.Column(db.Integer, db.ForeignKey('shelters.id'))
+    location = db.Column(db.String)
 
     adoptions=db.relationship('Adoption',back_populates='pet')
-    shelter=db.relationship('Shelter', back_populates='pets')
 
-    serialize_rules = ('-adoptions.pet', '-shelter.pets',)
+    serialize_rules = ('-adoptions.pet',)
 
     @validates('name')
     def validate_name(self,key,name):
@@ -63,7 +62,7 @@ class Pet(db.Model,SerializerMixin):
             raise ValueError('Pet name is required.')
         return name
     
-    @validates('type')
+    @validates('pet_type')
     def validate_type(self,key,pet_type):
         if not pet_type:
             raise ValueError('Pet type is required.')
@@ -81,9 +80,6 @@ class Pet(db.Model,SerializerMixin):
             raise ValueError('Pet age must be a positive number.')
         return age
 
-
-    def __repr__(self):
-        return f'<{self.name}, {self.type}, {self.breed}, {self.age}>'
 class Shelter(db.Model,SerializerMixin):
     __tablename__='shelters'
 
@@ -106,9 +102,6 @@ class Shelter(db.Model,SerializerMixin):
         if not location:
             raise ValueError('Location is required.')
         return location
-
-    def __repr__(self):
-        return f'<{self.name}, {self.location}>'
 
 class Adoption(db.Model,SerializerMixin):
     __tablename__='adoptions'
