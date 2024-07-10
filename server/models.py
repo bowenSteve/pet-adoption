@@ -2,6 +2,7 @@ from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy_serializer import SerializerMixin
 from sqlalchemy import MetaData
 from sqlalchemy.orm import validates, relationship
+import re
 
 
 metadata = MetaData(
@@ -32,11 +33,14 @@ class User (db.Model,SerializerMixin):
 
     @validates('email')
     def validate_email(self,key,email):
-        if '@' not in email:
-            raise ValueError('Email address is required')
+        email_regex = r'^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$'
+        if not  re.match(email_regex, email):
+            raise ValueError(f'Invalid email address:{email}')
         return email
+         
 
-
+    def __repr__(self):
+        return f'<User {self.name}, {self.email}>'
 
 class Pet(db.Model,SerializerMixin):
     __tablename__='pets'
@@ -46,12 +50,15 @@ class Pet(db.Model,SerializerMixin):
     pet_type=db.Column(db.String, nullable=False)
     breed=db.Column(db.String, nullable=False)
     age = db.Column(db.Integer,nullable=False)
-    shelter_id=db.Column(db.Integer, db.ForeignKey('shelters.id'))
+    location = db.Column(db.String)
+    #add image url
+    image_url = db.Column(db.String)
+    #add description
+    description = db.Column(db.String)
 
     adoptions=db.relationship('Adoption',back_populates='pet')
-    shelter=db.relationship('Shelter', back_populates='pets')
 
-    serialize_rules = ('-adoptions.pet', '-shelter.pets',)
+    serialize_rules = ('-adoptions.pet',)
 
     @validates('name')
     def validate_name(self,key,name):
@@ -59,7 +66,7 @@ class Pet(db.Model,SerializerMixin):
             raise ValueError('Pet name is required.')
         return name
     
-    @validates('type')
+    @validates('pet_type')
     def validate_type(self,key,pet_type):
         if not pet_type:
             raise ValueError('Pet type is required.')
@@ -77,29 +84,6 @@ class Pet(db.Model,SerializerMixin):
             raise ValueError('Pet age must be a positive number.')
         return age
 
-class Shelter(db.Model,SerializerMixin):
-    __tablename__='shelters'
-
-    id=db.Column(db.Integer, primary_key=True)
-    name=db.Column(db.String,nullable=False)
-    location=db.Column(db.String, nullable=False)
-    
-    pets=db.relationship('Pet', back_populates='shelter')
-
-    serialize_rules = ('-pets.shelter',)
-
-    @validates('name')
-    def validate_name(self,key,name):
-        if not name:
-            raise ValueError('Shelter name is required.')
-        return name
-    
-    @validates('location')
-    def validate_location(self,key,location):
-        if not location:
-            raise ValueError('Location is required.')
-        return location
-
 class Adoption(db.Model,SerializerMixin):
     __tablename__='adoptions'
 
@@ -107,7 +91,6 @@ class Adoption(db.Model,SerializerMixin):
     user_id=db.Column(db.Integer, db.ForeignKey('users.id'))
     pet_id=db.Column(db.Integer, db.ForeignKey('pets.id'))
     adoption_date=db.Column(db.String)
-    comments=db.Column(db.String)
     
     user=db.relationship('User', back_populates='adoptions')
     pet=db.relationship('Pet',back_populates='adoptions')
@@ -119,6 +102,4 @@ class Adoption(db.Model,SerializerMixin):
         if not adoption_date:
             raise ValueError('Adoption date required')
         return adoption_date
-
-
-
+        

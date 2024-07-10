@@ -1,6 +1,6 @@
 function Footer(){
     return(
-        <footer className="footer mt-auto">
+        <footer className="footer mt-auto footer-color">
         <div className="container">
           <div className="row">
             <div className="col-md-3">

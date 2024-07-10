@@ -1,7 +1,27 @@
+import { useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faRightToBracket } from '@fortawesome/free-solid-svg-icons';
 
 function LoggedNav(){
+  const navigate = useNavigate();
+  const handleLogout = () => {
+    fetch('http://127.0.0.1:5555/logout', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+    .then(response => {
+      if (response.ok) {
+        navigate('/');
+      } else {
+        console.error('Failed to log out');
+      }
+    })
+    .catch(error => {
+      console.error('Error logging out:', error);
+    });
+  };
     return (
         <div>
        <nav className="navbar navbar-expand-lg navbar-light navbar-color">
@@ -35,7 +55,7 @@ function LoggedNav(){
       </a>
     </li>
     <li className="nav-item ">
-  <button type="submit" className="btn btn-primary logout-btn">
+  <button type="submit" className="btn btn-primary logout-btn" onClick={handleLogout}>
     Log Out <FontAwesomeIcon icon={faRightToBracket} />
   </button>
 </li>

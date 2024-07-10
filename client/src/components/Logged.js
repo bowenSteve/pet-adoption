@@ -11,7 +11,7 @@ function Home() {
   const [searchTerm, setSearchTerm] = useState('');
 
   useEffect(() => {
-    fetch('http://localhost:3001/Pets')
+    fetch('http://127.0.0.1:5555/pets')
       .then(res => res.json())
       .then(data => {
         setPets(data);
@@ -21,10 +21,7 @@ function Home() {
   }, []);
 
   const sortPets = (sortBy) => {
-    // Create a copy of pets array to avoid mutating state directly
     const sortedPets = [...pets];
-
-    // Sort by breed
     if (sortBy === 'breed') {
       sortedPets.sort((a, b) => {
         if (a.breed < b.breed) return -1;
@@ -32,14 +29,13 @@ function Home() {
         return 0;
       });
     }
-    // Sort by age
     else if (sortBy === 'age') {
       sortedPets.sort((a, b) => a.age - b.age);
     }
 
-    // Update state with sorted pets
+ 
     setPets(sortedPets);
-    setFilteredPets(sortedPets); // Update filtered pets when sorting
+    setFilteredPets(sortedPets);
   };
 
   const handleSearchInputChange = (e) => {
