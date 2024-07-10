@@ -1,5 +1,8 @@
 import Home from "./components/Home";
 import PetCard from "./components/PetCard";
+import Logged from "./components/Logged"
+import MyPets from "./components/MyPets"
+import CreatePet from "./components/CreatePet"
 
 
 const routes = [
@@ -10,6 +13,18 @@ const routes = [
     {
         path:"/pet/:id",
         element:<PetCard />
+    },
+    {
+      path:"/logged",
+      element:<Logged />
+    },
+    {
+      path:"/MyPets",
+      element:<MyPets />
+    },
+    {
+      path:"/CreatePet",
+      element:<CreatePet />
     }
 ]
 export default routes;

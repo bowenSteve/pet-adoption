@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react';
 import Footer from './Footer';
 import Navbar from './Navbar';
 import DisplayPets from './DisplayPets';
+import LoggedNav from './LoggedNav';
+
 
 function Home() {
   const [pets, setPets] = useState([]);
@@ -9,7 +11,7 @@ function Home() {
   const [searchTerm, setSearchTerm] = useState('');
 
   useEffect(() => {
-    fetch('http://localhost:4001/Pets')
+    fetch('http://127.0.0.1:5555/pets')
       .then(res => res.json())
       .then(data => {
         setPets(data);
@@ -19,10 +21,7 @@ function Home() {
   }, []);
 
   const sortPets = (sortBy) => {
-    // Create a copy of pets array to avoid mutating state directly
     const sortedPets = [...pets];
-
-    // Sort by breed
     if (sortBy === 'breed') {
       sortedPets.sort((a, b) => {
         if (a.breed < b.breed) return -1;
@@ -30,14 +29,13 @@ function Home() {
         return 0;
       });
     }
-    // Sort by age
     else if (sortBy === 'age') {
       sortedPets.sort((a, b) => a.age - b.age);
     }
 
-    // Update state with sorted pets
+ 
     setPets(sortedPets);
-    setFilteredPets(sortedPets); // Update filtered pets when sorting
+    setFilteredPets(sortedPets);
   };
 
   const handleSearchInputChange = (e) => {
@@ -57,9 +55,9 @@ function Home() {
   };
 
   return (
-    <div>
-      <Navbar />
-      <div className="container ms-0">
+    <div> 
+        <LoggedNav />
+          <div className="container ms-0">
         <div className="d-flex align-items-center justify-content-between">
           <div className="sort-container" style={{ margin: '0' }}>
             <span>Sort:</span>

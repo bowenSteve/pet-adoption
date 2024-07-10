@@ -2,15 +2,17 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import Navbar from "./Navbar";
 import Footer from "./Footer";
+import LoggedNav from "./LoggedNav";
 
 function PetCard() {
   const [pet, setPet] = useState(null);
-  const [isFavorite, setIsFavorite] = useState(false); // State for favorite status
-  const [adoptedMessage, setAdoptedMessage] = useState(""); // State for adoption message
+  const [isFavorite, setIsFavorite] = useState(false);
+  const [adoptedMessage, setAdoptedMessage] = useState("");
+  const [currentUser, setCurrentUser] = useState(null);
   const { id } = useParams();
 
   useEffect(() => {
-    fetch(`http://localhost:3001/Pets/${id}`)
+    fetch(`http://127.0.0.1:5555/pets/${id}`)
       .then((res) => res.json())
       .then((data) => {
         setPet(data);
@@ -18,15 +20,52 @@ function PetCard() {
       .catch((err) => {
         console.error("Error fetching pet data:", err);
       });
+
+    // Fetch current user info
+    fetch('http://127.0.0.1:5555/current_user')
+      .then((res) => {
+        if (res.ok) {
+          return res.json();
+        } else {
+          throw new Error('User not logged in');
+        }
+      })
+      .then((user) => {
+        setCurrentUser(user);
+        console.log(user);
+      })
+      .catch((err) => {
+        console.error("Error fetching current user data:", err);
+      });
   }, [id]);
 
   const toggleFavorite = () => {
-    setIsFavorite(!isFavorite); // Toggle favorite status
+    setIsFavorite(!isFavorite);
   };
 
   const adoptPet = () => {
-    // Implement your adopt pet logic here
-    setAdoptedMessage(`You have adopted ${pet.name}. More details will be sent to your email`); // Set the adoption message
+    if (currentUser && pet) {
+      const adoptionData = {
+        user_id: currentUser.id,
+        pet_id: pet.id,
+        adoption_date: new Date().toISOString(),
+      };
+
+      fetch('http://127.0.0.1:5555/adoptions', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(adoptionData),
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          setAdoptedMessage(`You have adopted ${pet.name}. More details will be sent to your email.`);
+        })
+        .catch((err) => {
+          console.error("Error adopting pet:", err);
+        });
+    }
   };
 
   if (!pet) {
@@ -35,7 +74,7 @@ function PetCard() {
 
   return (
     <>
-      <Navbar />
+      <LoggedNav />
       <div className="card mb-4 text-center">
         <div
           className="card-img-container"
@@ -63,9 +102,15 @@ function PetCard() {
           >
             {isFavorite ? "Remove from Favorites" : "Mark as Favorite"}
           </button>
-          <button className="btn btn-success ms-1" onClick={adoptPet}>
-            Adopt
-          </button>
+          {currentUser ? (
+            <button className="btn btn-success ms-1" onClick={adoptPet}>
+              Adopt
+            </button>
+          ) : (
+            <button className="btn btn-secondary ms-1" disabled>
+              Log in to Adopt
+            </button>
+          )}
           {adoptedMessage && (
             <div className="mt-3">
               <p className="text-success">{adoptedMessage}</p>

@@ -1,12 +1,46 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState } from 'react';
+import { Link} from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faRightToBracket } from '@fortawesome/free-solid-svg-icons';
 
 function Navbar() {
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+  const [errors, setErrors] = useState([]);
+  const [loggedInUser, setLoggedInUser] = useState(null);
+  const navigate = useNavigate();
+
+  function handleLogIn(e) {
+    e.preventDefault();
+    setIsLoading(true);
+    fetch("http://localhost:4001/Pets", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({username}),
+    })
+    .then((r) => {
+      setIsLoading(false);
+      if (r.ok) {
+        r.json().then((user) => {
+          setLoggedInUser(user);
+          console.log(user)
+          navigate("/logged");
+        });
+      } else {
+        r.json().then((err) => setErrors(err.errors));
+      }
+    });
+  }
+  console.log(loggedInUser)
   return (
     <div>
       <nav className="navbar navbar-expand-lg navbar-light navbar-color">
         <a className="navbar-brand" href="#">
-          <Link className='link' to={"/"}><h2 className="ms-3 text-color ">Pawfect Match</h2></Link>
+          <Link className='link' to={"/"}><h2 className="ms-3 text-color">Pawfect Match</h2></Link>
         </a>
         <button
           className="navbar-toggler"
@@ -26,15 +60,21 @@ function Navbar() {
           </div>
           <ul className="navbar-nav">
             <li className="nav-item">
-              <a
-                className="nav-link d-flex justify-content-center"
-                href="#"
-                data-bs-toggle="offcanvas"
-                data-bs-target="#offcanvasLogin"
-                aria-controls="offcanvasLogin"
-              >
-                Login/Register
-              </a>
+              {loggedInUser ? (
+                <button type="button" className="btn btn-primary custom-login-btn" style={{ width: '150px' }}>
+                  Log Out <FontAwesomeIcon icon={faRightToBracket} />
+                </button>
+              ) : (
+                <a
+                  className="nav-link d-flex justify-content-center"
+                  href="#"
+                  data-bs-toggle="offcanvas"
+                  data-bs-target="#offcanvasLogin"
+                  aria-controls="offcanvasLogin"
+                >
+                  Login/Register
+                </a>
+              )}
             </li>
           </ul>
         </div>
@@ -58,16 +98,17 @@ function Navbar() {
           ></button>
         </div>
         <div className="offcanvas-body">
-          <form>
+          <form onSubmit={handleLogIn}>
             <div className="mb-3">
-              <label htmlFor="email" className="form-label">
-                Email address
+              <label htmlFor="username" className="form-label">
+                Username
               </label>
               <input
-                type="email"
+                type="text"
                 className="form-control"
-                id="email"
-                aria-describedby="emailHelp"
+                id="username"
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
               />
             </div>
             <div className="mb-3">
@@ -78,11 +119,22 @@ function Navbar() {
                 type="password"
                 className="form-control"
                 id="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
               />
             </div>
             <button type="submit" className="btn btn-primary custom-login-btn login-btn" style={{ width: '200px' }}>
-              Login
+              {isLoading ? 'Loading...' : 'Login'}
             </button>
+            {errors.length > 0 && (
+              <div className="mt-2">
+                {errors.map((error, index) => (
+                  <div key={index} className="alert alert-danger">
+                    {error}
+                  </div>
+                ))}
+              </div>
+            )}
             <div className="mt-2">
               <span>Don't have an account?</span>
               <a className="ms-1" href="">Create Account</a>
