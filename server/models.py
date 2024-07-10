@@ -84,29 +84,6 @@ class Pet(db.Model,SerializerMixin):
             raise ValueError('Pet age must be a positive number.')
         return age
 
-class Shelter(db.Model,SerializerMixin):
-    __tablename__='shelters'
-
-    id=db.Column(db.Integer, primary_key=True)
-    name=db.Column(db.String,nullable=False)
-    location=db.Column(db.String, nullable=False)
-    
-    pets=db.relationship('Pet', back_populates='shelter')
-
-    serialize_rules = ('-pets.shelter',)
-
-    @validates('name')
-    def validate_name(self,key,name):
-        if not name:
-            raise ValueError('Shelter name is required.')
-        return name
-    
-    @validates('location')
-    def validate_location(self,key,location):
-        if not location:
-            raise ValueError('Location is required.')
-        return location
-
 class Adoption(db.Model,SerializerMixin):
     __tablename__='adoptions'
 
