@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faRightToBracket } from '@fortawesome/free-solid-svg-icons';
 
@@ -27,7 +27,7 @@ function LoggedNav(){
         <div>
        <nav className="navbar navbar-expand-lg navbar-light navbar-color">
         <a className="navbar-brand" href="#">
-          <h2 className="ms-3 text-color ">Pawfect Match</h2>
+        <Link className='link' to={"/logged"}><h2 className="ms-3 text-color">Pawfect Match</h2></Link>
         </a>
         <button
           className="navbar-toggler"
@@ -52,7 +52,7 @@ function LoggedNav(){
     </li>
     <li className="nav-item">
       <a className="nav-link d-flex justify-content-center" href="#">
-        Create a Pet
+        <Link className="link" to={"/CreatePet"}>Create a Pet</Link>
       </a>
     </li>
     <li className="nav-item ">

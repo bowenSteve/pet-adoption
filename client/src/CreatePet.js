@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-
-const Pets = () => {
+import LoggedNav from './components/LoggedNav';
+function CreatePet(){
     const [pets, setPets] = useState([]);
     const [formData, setFormData] = useState({
         name: '',
@@ -75,6 +75,7 @@ const Pets = () => {
 
     return (
         <div>
+            <LoggedNav />
             <h2>Pets</h2>
             <form onSubmit={handleSubmit}>
                 <div>
@@ -112,4 +113,4 @@ const Pets = () => {
     );
 };
 
-export default Pets;
+export default CreatePet;
