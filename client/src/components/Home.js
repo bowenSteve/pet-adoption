@@ -9,7 +9,7 @@ function Home() {
   const [searchTerm, setSearchTerm] = useState('');
 
   useEffect(() => {
-    fetch('http://localhost:4001/Pets')
+    fetch('http://127.0.0.1:5555/pets')
       .then(res => res.json())
       .then(data => {
         setPets(data);
