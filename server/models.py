@@ -114,7 +114,6 @@ class Adoption(db.Model,SerializerMixin):
     user_id=db.Column(db.Integer, db.ForeignKey('users.id'))
     pet_id=db.Column(db.Integer, db.ForeignKey('pets.id'))
     adoption_date=db.Column(db.String)
-    #comments=db.Column(db.String)
     
     user=db.relationship('User', back_populates='adoptions')
     pet=db.relationship('Pet',back_populates='adoptions')
