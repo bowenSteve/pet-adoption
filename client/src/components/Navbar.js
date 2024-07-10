@@ -2,6 +2,26 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 
 function Navbar() {
+
+  function handleLogIn(e){
+      e.preventDefault();
+      setIsLoading(true);
+      fetch("/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ username, password }),
+      }).then((r) => {
+        setIsLoading(false);
+        if (r.ok) {
+          r.json().then((user) => onLogin(user));
+        } else {
+          r.json().then((err) => setErrors(err.errors));
+        }
+      });
+    }
+  
   return (
     <div>
       <nav className="navbar navbar-expand-lg navbar-light navbar-color">
@@ -58,7 +78,7 @@ function Navbar() {
           ></button>
         </div>
         <div className="offcanvas-body">
-          <form>
+          <form onSubmit={handleLogIn}>
             <div className="mb-3">
               <label htmlFor="email" className="form-label">
                 Email address

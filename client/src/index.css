@@ -83,6 +83,22 @@ footer {
 .link{
   text-decoration: none;
 }
+/* login/logout */
 .login-btn{
   margin-left: 85px;
+}
+.logout-btn{
+ background-color: #f84f00;
+ color: whitesmoke;
+}
+.logout-btn:hover {
+  background-color: #45a049;
+  border-color: #45a049; 
+}
+.custom-nav .nav-item {
+  margin-right: 15px; 
+}
+
+.custom-nav .nav-item:last-child {
+  margin-right: 0;
 }

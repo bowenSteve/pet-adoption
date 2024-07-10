@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react';
 import Footer from './Footer';
 import Navbar from './Navbar';
 import DisplayPets from './DisplayPets';
+import LoggedNav from './LoggedNav';
+
 
 function Home() {
   const [pets, setPets] = useState([]);
@@ -57,9 +59,9 @@ function Home() {
   };
 
   return (
-    <div>
-      <Navbar />
-      <div className="container ms-0">
+    <div> 
+        <LoggedNav />
+          <div className="container ms-0">
         <div className="d-flex align-items-center justify-content-between">
           <div className="sort-container" style={{ margin: '0' }}>
             <span>Sort:</span>
