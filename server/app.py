@@ -24,7 +24,18 @@ def index():
     return "<h1>Pawfect Match</h1>"
 
 #Login
-#SignUp
+class Login(Resource):
+
+    def post(self):
+
+        username = request.get_json()['username']
+        user = User.query.filter(User.username == username)
+
+        session['user_id'] = user.id
+
+        return user.to_dict()
+
+api.add_resource(Login, '/login')
 
 class Users(Resource):
     
@@ -68,6 +79,8 @@ class Pets(Resource):
             breed=data['breed'],
             age=data['age'],
             location=data['location'],
+            image_url=data['image_url'],
+            description=data['description'],
         )
 
         db.session.add(new_pet)
@@ -82,6 +95,9 @@ api.add_resource(Pets, '/pets')
 class PetsByID(Resource):
 
     def get(self, id):
+
+        if not session['user_id']:
+            return {'error': 'Unauthorized, Need to Log in'}, 401
 
         pet = Pet.query.filter_by(id=id).first()
 
@@ -131,6 +147,24 @@ class Adoptions(Resource):
         adoptions_list = [adoption.to_dict() for adoption in Adoption.query.all()]
 
         return adoptions_list, 200
+    
+    def post(self):
+
+        data = request.get_json()
+
+        new_adoption = Adoption(
+            user_id=data['name'],
+            pet_id=data['pet_type'],
+            adoption_date=data['breed'],
+        )
+
+        db.session.add(new_adoption)
+        db.session.commit()
+
+        response_dict = new_adoption.to_dict()
+
+        return response_dict, 201
+        
 
 api.add_resource(Adoptions, '/adoptions')
 

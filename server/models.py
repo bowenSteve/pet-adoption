@@ -51,6 +51,10 @@ class Pet(db.Model,SerializerMixin):
     breed=db.Column(db.String, nullable=False)
     age = db.Column(db.Integer,nullable=False)
     location = db.Column(db.String)
+    #add image url
+    image_url = db.Column(db.String)
+    #add description
+    description = db.Column(db.String)
 
     adoptions=db.relationship('Adoption',back_populates='pet')
 
@@ -110,7 +114,7 @@ class Adoption(db.Model,SerializerMixin):
     user_id=db.Column(db.Integer, db.ForeignKey('users.id'))
     pet_id=db.Column(db.Integer, db.ForeignKey('pets.id'))
     adoption_date=db.Column(db.String)
-    comments=db.Column(db.String)
+    #comments=db.Column(db.String)
     
     user=db.relationship('User', back_populates='adoptions')
     pet=db.relationship('Pet',back_populates='adoptions')

@@ -15,15 +15,15 @@ with app.app_context():
     users = [user1, user2, user3]
 
     print("Creating pets...")
-    pet1 = Pet(name='Mike', pet_type='Cat', breed='Persian', age=2, location='KSPCA')
-    pet2 = Pet(name='Peter', pet_type='Dog', breed='Poodle', age=3, location='KSPCA')
-    pet3 = Pet(name='John', pet_type='Dog', breed='Beagle', age=4, location='KSPCA')
+    pet1 = Pet(name='Mike', pet_type='Cat', breed='Persian', age=2, location='KSPCA', image_url='',description='')
+    pet2 = Pet(name='Peter', pet_type='Dog', breed='Poodle', age=3, location='KSPCA', image_url='',description='')
+    pet3 = Pet(name='John', pet_type='Dog', breed='Beagle', age=4, location='KSPCA', image_url='',description='')
     pets = [pet1, pet2, pet3]
 
     print("Creating Adoptions...")
-    adopt1 = Adoption(user= user1, pet=pet1, adoption_date='12/12/2023', comments='Mike is a good pet')
-    adopt2 = Adoption(user=user2, pet=pet2, adoption_date='2/02/2024', comments='Peter is a good pet')
-    adopt3 = Adoption(user=user3, pet=pet3, adoption_date='15/04/2024', comments='John is a good pet')
+    adopt1 = Adoption(user= user1, pet=pet1, adoption_date='12/12/2023')
+    adopt2 = Adoption(user=user2, pet=pet2, adoption_date='2/02/2024')
+    adopt3 = Adoption(user=user3, pet=pet3, adoption_date='15/04/2024')
     adoptions = [adopt1, adopt2, adopt3]
 
     db.session.add_all(users)
