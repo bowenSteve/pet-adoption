@@ -29,8 +29,7 @@ useEffect(() => {
           setCurrentIndex(currentIndex + 4);
         }
       };
-
-      const previousPets = () => {
+     const previousPets = () => {
         if (currentIndex - 4 >= 0) {
           setCurrentIndex(currentIndex - 4);
         }
