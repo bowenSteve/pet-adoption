@@ -1,3 +1,4 @@
+from datetime import datetime
 from flask_migrate import Migrate
 from models import db, User, Pet, Adoption
 from flask import Flask, request, make_response, jsonify, session
@@ -5,15 +6,13 @@ from flask_restful import Api, Resource
 from flask_cors import CORS
 import os
 
-BASE_DIR = os.path.abspath(os.path.dirname(__file__))
-DATABASE = os.environ.get("DB_URI", f"sqlite:///{os.path.join(BASE_DIR, 'app.db')}")
+from models import db, User, Pet, Adoption
 
 app = Flask(__name__)
-CORS(app) 
-app.secret_key = 'your_secret_key_here'
-
-app.config["SQLALCHEMY_DATABASE_URI"] = DATABASE
-app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
+CORS(app)
+app.secret_key = b'Y\xf1Xz\x00\xad|eQ\x80t \xca\x1a\x10K'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///app.db'
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.json.compact = False
 
 migrate = Migrate(app, db)
@@ -27,20 +26,20 @@ def index():
     return "<h1>Pawfect Match</h1>"
 
 
-@app.route("/logout", methods=['POST'])
+@app.route('/logout', methods=['DELETE'])
 def logout():
-    session.pop('user_id', None) 
+    session.pop('user_id', None)  # Clear the user_id from session
     return jsonify({'message': 'Logged out successfully'}), 200
-
 class CheckSession(Resource):
 
     def get(self):
-        user = User.query.filter(User.id == session.get('user_id')).first()
-        print(user)
-        if user:
-            return user.to_dict()
-        else:
-            return {'message': '401: Not Authorized'}, 401
+        user_id = session['user_id']
+        print(user_id)
+        if user_id:
+            user=User.query.filter(User.id==user_id).first()
+            return user.to_dict(),200
+
+        return {}, 401
 
 api.add_resource(CheckSession, '/check_session')
 
@@ -185,9 +184,9 @@ class Adoptions(Resource):
     def post(self):
         data = request.get_json()
         new_adoption = Adoption(
-            user_id=data['user_id'],  # Make sure you get 'user_id' from the data
-            pet_id=data['pet_id'],    # Make sure you get 'pet_id' from the data
-            adoption_date=data.get('adoption_date', datetime.utcnow()),  # Optional: get current date if not provided
+            user_id=data['user_id'],  
+            pet_id=data['pet_id'],    
+            adoption_date=data.get('adoption_date', datetime.utcnow()),  
         )
         db.session.add(new_adoption)
         db.session.commit()
@@ -195,6 +194,23 @@ class Adoptions(Resource):
         return response_dict, 201
 
 api.add_resource(Adoptions, '/adoptions')
+
+class UserAdoptions(Resource):
+    def get(self):
+        user_id = session.get('user_id')
+        if user_id:
+            adoptions = Adoption.query.filter_by(user_id=user_id).all()
+            adoptions_list = []
+            for adoption in adoptions:
+                pet = Pet.query.get(adoption.pet_id)
+                if pet:
+                    adoption_dict = adoption.to_dict()
+                    adoption_dict['pet'] = pet.to_dict()
+                    adoptions_list.append(adoption_dict)
+            return adoptions_list, 200
+        return {'error': 'User not logged in'}, 401
+
+api.add_resource(UserAdoptions, '/user_adoptions')
 
 
 if __name__ == "__main__":

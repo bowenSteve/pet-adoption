@@ -3,6 +3,7 @@ import PetCard from "./components/PetCard";
 import Logged from "./components/Logged"
 import MyPets from "./components/MyPets"
 import CreatePet from "./CreatePet"
+import Adoptions from "./components/Adoptions";
 
 
 const routes = [
@@ -25,6 +26,10 @@ const routes = [
     {
       path:"/CreatePet",
       element:<CreatePet />
+    },
+    {
+      path:"/user_adoptions",
+      element:<Adoptions />
     }
 ]
 export default routes;

@@ -12,7 +12,7 @@ function PetCard() {
   const { id } = useParams();
 
   useEffect(() => {
-    fetch(`http://127.0.0.1:5555/pets/${id}`)
+    fetch(`/pets/${id}`)
       .then((res) => res.json())
       .then((data) => {
         setPet(data);
@@ -22,7 +22,7 @@ function PetCard() {
       });
 
     // Fetch current user info
-    fetch('http://127.0.0.1:5555/current_user')
+    fetch('/current_user')
       .then((res) => {
         if (res.ok) {
           return res.json();
@@ -32,13 +32,13 @@ function PetCard() {
       })
       .then((user) => {
         setCurrentUser(user);
-        console.log(user);
+        //console.log(user);
       })
       .catch((err) => {
         console.error("Error fetching current user data:", err);
       });
   }, [id]);
-
+console.log(currentUser)
   const toggleFavorite = () => {
     setIsFavorite(!isFavorite);
   };
@@ -51,7 +51,7 @@ function PetCard() {
         adoption_date: new Date().toISOString(),
       };
 
-      fetch('http://127.0.0.1:5555/adoptions', {
+      fetch('/adoptions', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

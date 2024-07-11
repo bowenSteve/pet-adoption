@@ -6,8 +6,8 @@ import { faRightToBracket } from '@fortawesome/free-solid-svg-icons';
 function LoggedNav(){
   const navigate = useNavigate();
   const handleLogout = () => {
-    fetch('http://127.0.0.1:5555/logout', {
-      method: 'POST',
+    fetch('/logout', {
+      method: 'DELETE',
       headers: {
         'Content-Type': 'application/json',
       },
@@ -47,7 +47,7 @@ function LoggedNav(){
   <ul className="navbar-nav custom-nav">
     <li className="nav-item">
       <a className="nav-link d-flex justify-content-center" href="#">
-        My Pets
+      <Link className="link" to={"/user_adoptions"}>My Pets</Link>
       </a>
     </li>
     <li className="nav-item">
