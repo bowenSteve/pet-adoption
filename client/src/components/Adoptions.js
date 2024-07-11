@@ -43,7 +43,6 @@ useEffect(() => {
           {pets.slice(currentIndex, currentIndex + 4).map((pet, index) => (
             <div className="col-md-3" key={index}>
               <div className="card mb-4" style={{ cursor: 'pointer' }}>
-                <Link to={`/pet/${pet.id}`} style={{ textDecoration: 'none', color: 'inherit' }}>
                   <div className="card-img-container" style={{ height: '200px', overflow: 'hidden' }}>
                     <img src={pet.pet.image_url} className="card-img-top" alt={pet.pet.name} />
                   </div>
@@ -51,8 +50,8 @@ useEffect(() => {
                     <h5 className="card-title">{pet.pet.name}</h5>
                     <p className="card-text">Age: {pet.pet.age}</p>
                     <p className="card-text">Breed: {pet.pet.breed}</p>
+                    <p className="card-text">Breed: {pet.pet.description}</p>
                   </div>
-                </Link>
               </div>
             </div>
           ))}

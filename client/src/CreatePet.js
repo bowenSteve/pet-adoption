@@ -1,13 +1,64 @@
 import React, { useState, useEffect } from 'react';
 import LoggedNav from './components/LoggedNav';
-function CreatePet(){
+import Footer from './components/Footer';
+
+function CreatePet() {
     const [pets, setPets] = useState([]);
     const [formData, setFormData] = useState({
         name: '',
-        age: '',
+        pet_type: '',
         breed: '',
+        age: '',
+        location: '',
+        image_url: '',
         description: ''
     });
+    const [successMessage, setSuccessMessage] = useState('');
+
+    console.log(formData);
+
+    function handlePets(e) {
+        e.preventDefault();
+
+        // Convert age to integer
+        const dataToSubmit = {
+            ...formData,
+            age: parseInt(formData.age, 10)
+        };
+
+        fetch('/pets', {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(dataToSubmit),
+        })
+        .then(res => {
+            if (res.ok) {
+                return res.json();
+            }
+            throw new Error('Failed to add pet');
+        })
+        .then(data => {
+            console.log('Pet added successfully:', data);
+            setFormData({
+                name: '',
+                pet_type: '',
+                breed: '',
+                age: '',
+                location: '',
+                image_url: '',
+                description: ''
+            });
+            fetchPets();
+            setSuccessMessage('Pet added successfully!');
+            // Clear the success message after 3 seconds
+            setTimeout(() => setSuccessMessage(''), 3000);
+        })
+        .catch(error => {
+            console.error('Error adding pet:', error);
+        });
+    }
 
     useEffect(() => {
         fetchPets();
@@ -15,7 +66,7 @@ function CreatePet(){
 
     const fetchPets = async () => {
         try {
-            const response = await fetch('/api/pets'); // Replace with actual API endpoint
+            const response = await fetch('/api/pets');
             if (!response.ok) {
                 throw new Error('Failed to fetch pets');
             }
@@ -32,31 +83,6 @@ function CreatePet(){
             ...formData,
             [name]: value
         });
-    };
-
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-        try {
-            const response = await fetch('/api/pets', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(formData)
-            });
-            if (!response.ok) {
-                throw new Error('Failed to create pet');
-            }
-            setFormData({
-                name: '',
-                age: '',
-                breed: '',
-                description: ''
-            });
-            fetchPets();
-        } catch (error) {
-            console.error('Error creating pet:', error);
-        }
     };
 
     const handleDelete = async (id) => {
@@ -76,25 +102,89 @@ function CreatePet(){
     return (
         <div>
             <LoggedNav />
-            <h2>Pets</h2>
-            <form onSubmit={handleSubmit}>
-                <div>
-                    <label htmlFor="name">Name</label>
-                    <input type="text" id="name" name="name" value={formData.name} onChange={handleInputChange} />
+            {successMessage && (
+                <div className="alert alert-success" role="alert">
+                    {successMessage}
                 </div>
-                <div>
-                    <label htmlFor="age">Age</label>
-                    <input type="number" id="age" name="age" value={formData.age} onChange={handleInputChange} />
+            )}
+            <form onSubmit={handlePets} className="w-50 mx-auto">
+                <div className="mb-3">
+                    <label htmlFor="name" className="form-label">Name</label>
+                    <input
+                        type="text"
+                        id="name"
+                        name="name"
+                        className="form-control"
+                        value={formData.name}
+                        onChange={handleInputChange}
+                    />
                 </div>
-                <div>
-                    <label htmlFor="breed">Breed</label>
-                    <input type="text" id="breed" name="breed" value={formData.breed} onChange={handleInputChange} />
+                <div className="mb-3">
+                    <label htmlFor="pet_type" className="form-label">Pet Type</label>
+                    <input
+                        type="text"
+                        id="pet_type"
+                        name="pet_type"
+                        className="form-control"
+                        value={formData.pet_type}
+                        onChange={handleInputChange}
+                    />
                 </div>
-                <div>
-                    <label htmlFor="description">Description</label>
-                    <textarea id="description" name="description" value={formData.description} onChange={handleInputChange} />
+                <div className="mb-3">
+                    <label htmlFor="breed" className="form-label">Breed</label>
+                    <input
+                        type="text"
+                        id="breed"
+                        name="breed"
+                        className="form-control"
+                        value={formData.breed}
+                        onChange={handleInputChange}
+                    />
                 </div>
-                <button type="submit">
+                <div className="mb-3">
+                    <label htmlFor="age" className="form-label">Age</label>
+                    <input
+                        type="number"
+                        id="age"
+                        name="age"
+                        className="form-control"
+                        value={formData.age}
+                        onChange={handleInputChange}
+                    />
+                </div>
+                <div className="mb-3">
+                    <label htmlFor="location" className="form-label">Location</label>
+                    <input
+                        type="text"
+                        id="location"
+                        name="location"
+                        className="form-control"
+                        value={formData.location}
+                        onChange={handleInputChange}
+                    />
+                </div>
+                <div className="mb-3">
+                    <label htmlFor="image_url" className="form-label">Image URL</label>
+                    <input
+                        type="text"
+                        id="image_url"
+                        name="image_url"
+                        className="form-control"
+                        value={formData.image_url}
+                        onChange={handleInputChange}
+                    />
+                </div>
+                <div className="mb-3">
+                    <label htmlFor="description" className="form-label">Description</label>
+                    <textarea
+                        id="description"
+                        name="description"
+                        className="form-control"
+                        value={formData.description}
+                        onChange={handleInputChange}
+                    />
+                </div>
+                <button type="submit" className="btn logout-btn">
                     Add Pet
                 </button>
             </form>
@@ -109,8 +199,9 @@ function CreatePet(){
                     </li>
                 ))}
             </ul>
+            <Footer />
         </div>
     );
-};
+}
 
 export default CreatePet;

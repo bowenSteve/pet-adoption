@@ -78,7 +78,7 @@ function Home() {
               value={searchTerm}
               onChange={handleSearchInputChange}
             />
-            <button className="btn btn-outline-success ml-2" type="submit">
+            <button className="btn btn-outline-success logout-btn ml-2" type="submit">
               Search
             </button>
           </form>

@@ -49,9 +49,11 @@ footer {
 .card-text {
   font-size: 0.9rem;
 }
-
+.main-text-color{
+ color: #f84f00;
+}
 .text-color{
-  color: #f84f00;
+  color: whitesmoke;
 }
 .pagination-container {
   position: relative;
@@ -90,8 +92,9 @@ footer {
  color: whitesmoke;
 }
 .logout-btn:hover {
-  background-color: #45a049;
-  border-color: #45a049; 
+  background-color: whitesmoke;
+  border-color: #f84f00;
+  color: black; 
 }
 .custom-nav .nav-item {
   margin-right: 15px; 
@@ -99,4 +102,11 @@ footer {
 
 .custom-nav .nav-item:last-child {
   margin-right: 0;
+}
+.custom-navcolor{
+  background-color: #f3f3da;
+}
+.custom-footercolor{
+  background-color: #495153;
+  box-shadow: 1px 0.5px;
 }

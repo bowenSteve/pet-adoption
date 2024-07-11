@@ -19,10 +19,7 @@ function Home() {
   }, []);
 
   const sortPets = (sortBy) => {
-    // Create a copy of pets array to avoid mutating state directly
     const sortedPets = [...pets];
-
-    // Sort by breed
     if (sortBy === 'breed') {
       sortedPets.sort((a, b) => {
         if (a.breed < b.breed) return -1;
@@ -30,14 +27,12 @@ function Home() {
         return 0;
       });
     }
-    // Sort by age
     else if (sortBy === 'age') {
       sortedPets.sort((a, b) => a.age - b.age);
     }
 
-    // Update state with sorted pets
     setPets(sortedPets);
-    setFilteredPets(sortedPets); // Update filtered pets when sorting
+    setFilteredPets(sortedPets);
   };
 
   const handleSearchInputChange = (e) => {
@@ -80,7 +75,7 @@ function Home() {
               value={searchTerm}
               onChange={handleSearchInputChange}
             />
-            <button className="btn btn-outline-success ml-2" type="submit">
+            <button className="btn btn-outline-success logout-btn ml-2" type="submit">
               Search
             </button>
           </form>

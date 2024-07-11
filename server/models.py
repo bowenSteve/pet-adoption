@@ -51,15 +51,25 @@ class Pet(db.Model,SerializerMixin):
     breed=db.Column(db.String, nullable=False)
     age = db.Column(db.Integer,nullable=False)
     location = db.Column(db.String)
-    #add image url
     image_url = db.Column(db.String)
-    #add description
     description = db.Column(db.String)
+    user_id= db.Column(db.String)
 
     adoptions=db.relationship('Adoption',back_populates='pet')
 
     serialize_rules = ('-adoptions.pet',)
-
+    def to_dict(self):
+        return {
+            'id': self.id,
+            'name': self.name,
+            'pet_type': self.pet_type,
+            'breed': self.breed,
+            'age': self.age,
+            'location': self.location,
+            'image_url': self.image_url,
+            'description': self.description,
+            'user_id': self.user_id
+        }
     @validates('name')
     def validate_name(self,key,name):
         if not name:

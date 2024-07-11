@@ -25,9 +25,9 @@ function LoggedNav(){
   };
     return (
         <div>
-       <nav className="navbar navbar-expand-lg navbar-light navbar-color">
+       <nav className="navbar navbar-expand-lg custom-navcolor ">
         <a className="navbar-brand" href="#">
-        <Link className='link' to={"/logged"}><h2 className="ms-3 text-color">Pawfect Match</h2></Link>
+        <Link className='link' to={"/logged"}><h2 className="ms-3 main-text-color">Pawfect Match</h2></Link>
         </a>
         <button
           className="navbar-toggler"
@@ -44,24 +44,23 @@ function LoggedNav(){
   <div className="navbar-nav">
     {/* This div is empty intentionally to create spacing on the left side */}
   </div>
-  <ul className="navbar-nav custom-nav">
-    <li className="nav-item">
-      <a className="nav-link d-flex justify-content-center" href="#">
-      <Link className="link" to={"/user_adoptions"}>My Pets</Link>
-      </a>
-    </li>
-    <li className="nav-item">
-      <a className="nav-link d-flex justify-content-center" href="#">
-        <Link className="link" to={"/CreatePet"}>Create a Pet</Link>
-      </a>
-    </li>
-    <li className="nav-item ">
-  <button type="submit" className="btn btn-primary logout-btn" onClick={handleLogout}>
-    Log Out <FontAwesomeIcon icon={faRightToBracket} />
-  </button>
-</li>
-
-  </ul>
+  <ul className="navbar-nav custom-nav d-flex justify-content-center align-items-center">
+      <li className="nav-item">
+        <Link className="nav-link btn link main-text-color logout-btn d-flex justify-content-center align-items-center" to="/user_adoptions">
+          My Pets
+        </Link>
+      </li>
+      <li className="nav-item">
+        <Link className="nav-link btn link main-text-color logout-btn d-flex justify-content-center align-items-center" to="/CreatePet">
+          Rehome
+        </Link>
+      </li>
+      <li className="nav-item">
+        <button type="submit" className="btn btn-primary logout-btn d-flex justify-content-center align-items-center" onClick={handleLogout}>
+          Log Out <FontAwesomeIcon icon={faRightToBracket} />
+        </button>
+      </li>
+    </ul>
 </div>
 
         </nav>

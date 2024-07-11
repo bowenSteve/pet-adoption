@@ -30,6 +30,18 @@ def index():
 def logout():
     session.pop('user_id', None)  # Clear the user_id from session
     return jsonify({'message': 'Logged out successfully'}), 200
+
+@app.route('/user_pets', methods=['GET'])
+def user_pets():
+    user_id = session.get('user_id')
+    if not user_id:
+        return jsonify({'error': 'User not logged in'}), 401
+    
+    user_pets = Pet.query.filter_by(user_id=user_id).all()
+    pets_list = [pet.to_dict() for pet in user_pets]
+    
+    return jsonify(pets_list), 200
+    
 class CheckSession(Resource):
 
     def get(self):
@@ -120,6 +132,7 @@ class Pets(Resource):
             location=data['location'],
             image_url=data['image_url'],
             description=data['description'],
+            user_id = session['user_id']
         )
 
         db.session.add(new_pet)

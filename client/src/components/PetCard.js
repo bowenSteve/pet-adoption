@@ -96,18 +96,18 @@ console.log(currentUser)
           <h5 className="card-title">{pet.name}</h5>
           <p className="card-text">Age: {pet.age}</p>
           <p className="card-text">Breed: {pet.breed}</p>
-          <button
-            className={`btn btn-${isFavorite ? "danger" : "outline-primary"} mr-3`}
+          {/* <button
+            className={`btn logout-btn btn-${isFavorite ? "danger" : "outline-primary"} mr-3`}
             onClick={toggleFavorite}
           >
             {isFavorite ? "Remove from Favorites" : "Mark as Favorite"}
-          </button>
+          </button> */}
           {currentUser ? (
-            <button className="btn btn-success ms-1" onClick={adoptPet}>
+            <button className="btn logout-btn ms-1" onClick={adoptPet}>
               Adopt
             </button>
           ) : (
-            <button className="btn btn-secondary ms-1" disabled>
+            <button className="btn logout-btn ms-1" disabled>
               Log in to Adopt
             </button>
           )}
