@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import Footer from './Footer';
 import Navbar from './Navbar';
 import DisplayPets from './DisplayPets';
+import image from"../images/img.jpeg"
 
 function Home() {
   const [pets, setPets] = useState([]);
@@ -54,7 +55,27 @@ function Home() {
   return (
     <div>
       <Navbar />
-      <div className="container ms-0">
+      <div className="container-fluid my-0 p-0">
+      <div className="row no-gutters">
+        <div className="col-md-4">
+          <div className="card bg-warning custom-card" style={{ height: '800px' }}>
+          </div>
+        </div>
+        <div className="col-md-4">
+          <div className="card custom-card" style={{ height: '800px', position: 'relative' }}>
+            <div className="overlay">
+              <p className="my-5 fs-1 fw-bold main-text-color mt-1">ADOPT. DON'T SHOP.</p>
+            </div>
+            <img src={image} className="card-img-top" alt="Example" style={{ height: '100%', objectFit: 'cover' }} />
+          </div>
+        </div>
+        <div className="col-md-4">
+          <div className="card bg-warning custom-card" style={{ height: '800px' }}>
+          </div>
+        </div>
+      </div>
+    </div>
+      {/* <div className="container ms-0">
         <div className="d-flex align-items-center justify-content-between">
           <div className="sort-container" style={{ margin: '0' }}>
             <span>Sort:</span>
@@ -80,9 +101,9 @@ function Home() {
             </button>
           </form>
         </div>
-      </div>
+      </div> */}
 
-      <DisplayPets pets={filteredPets} />
+      {/* <DisplayPets pets={filteredPets} /> */}
       <Footer />
     </div>
   );

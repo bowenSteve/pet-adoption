@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
-import { Link} from 'react-router-dom';
+import React, { useState} from 'react';
+import {FaPaw } from 'react-icons/fa';
+import { Link } from 'react-router-dom';
 import { useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faRightToBracket } from '@fortawesome/free-solid-svg-icons';
@@ -41,7 +42,7 @@ function Navbar() {
     <div>
       <nav className="navbar navbar-expand-lg navbar-light custom-navcolor">
         <a className="navbar-brand" href="#">
-          <Link className='link' to={"/"}><h2 className="ms-3 main-text-color">Pawfect Match</h2></Link>
+          <Link className='link' to={"/"}><h2 className="ms-3 main-text-color">Pawfect Match<FaPaw /></h2></Link>
         </a>
         <button
           className="navbar-toggler"
@@ -127,7 +128,7 @@ function Navbar() {
                 onChange={(e) => setPassword(e.target.value)}
               />
             </div>
-            <button type="submit" className="btn btn-primary custom-login-btn login-btn" style={{ width: '200px' }}>
+            <button type="submit" className="btn btn-primary custom-login-btn login-btn logout-btn" style={{ width: '200px' }}>
               {isLoading ? 'Loading...' : 'Login'}
             </button>
             {errors.length > 0 && (
@@ -139,6 +140,7 @@ function Navbar() {
                 ))}
               </div>
             )}
+      
             <div className="mt-2">
               <span>Don't have an account?</span>
               <a className="ms-1" href="">Create Account</a>

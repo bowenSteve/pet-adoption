@@ -1,6 +1,7 @@
 import { useNavigate, Link } from "react-router-dom";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faRightToBracket } from '@fortawesome/free-solid-svg-icons';
+import {FaPaw } from 'react-icons/fa';
 
 
 function LoggedNav(){
@@ -27,7 +28,7 @@ function LoggedNav(){
         <div>
        <nav className="navbar navbar-expand-lg custom-navcolor ">
         <a className="navbar-brand" href="#">
-        <Link className='link' to={"/logged"}><h2 className="ms-3 main-text-color">Pawfect Match</h2></Link>
+        <Link className='link' to={"/logged"}><h2 className="ms-3 main-text-color">Pawfect Match<FaPaw /></h2></Link>
         </a>
         <button
           className="navbar-toggler"
@@ -47,7 +48,7 @@ function LoggedNav(){
   <ul className="navbar-nav custom-nav d-flex justify-content-center align-items-center">
       <li className="nav-item">
         <Link className="nav-link btn link main-text-color logout-btn d-flex justify-content-center align-items-center" to="/user_adoptions">
-          My Pets
+          PawList
         </Link>
       </li>
       <li className="nav-item">

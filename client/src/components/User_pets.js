@@ -1,13 +1,13 @@
 import { useState, useEffect } from "react"
 import { Link } from 'react-router-dom';
 import LoggedNav from "./LoggedNav";
-import User_pets from "./User_pets"
 
 function Adoptions(){
 const [pets, setPets]=useState([])
 const [currentIndex, setCurrentIndex] = useState(0);
+
 useEffect(() => {
-    fetch('/user_adoptions')
+    fetch('/user_pets')
         .then(res => {
             if (!res.ok) {
                 throw new Error('Network response was not ok');
@@ -16,7 +16,6 @@ useEffect(() => {
         })
         .then(data => {
             setPets(data);
-            console.log(data)
         })
         .catch(error => {
             console.error('Error fetching user adoptions:', error);
@@ -36,17 +35,15 @@ useEffect(() => {
           setCurrentIndex(currentIndex - 4);
         }
       };
-      console.log(pets)
     return(
         <div>
-        <LoggedNav />
-        <div className="container mt-5">
+        {/* <div className="container mt-5">
         <div className="row">
           {pets.slice(currentIndex, currentIndex + 4).map((pet, index) => (
             <div className="col-md-3" key={index}>
               <div className="card mb-4" style={{ cursor: 'pointer' }}>
                   <div className="card-img-container" style={{ height: '200px', overflow: 'hidden' }}>
-                    <img src='' className="card-img-top" alt={pet.pet.name} />
+                    <img src={pet.pet.image_url} className="card-img-top" alt={pet.pet.name} />
                   </div>
                   <div className="card-body">
                     <h5 className="card-title">{pet.pet.name}</h5>
@@ -69,9 +66,8 @@ useEffect(() => {
               Next
             </button>
           )}
-        </div>
-      </div>
-      <User_pets />
+        </div> */}
+
       </div>
     )
 
