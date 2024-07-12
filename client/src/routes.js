@@ -4,6 +4,8 @@ import Logged from "./components/Logged"
 import MyPets from "./components/MyPets"
 import CreatePet from "./CreatePet"
 import Adoptions from "./components/Adoptions";
+import ModifyPet from "./components/ModifyPet"
+import CreateUser from "./components/CreateUser"
 
 
 const routes = [
@@ -30,6 +32,14 @@ const routes = [
     {
       path:"/user_adoptions",
       element:<Adoptions />
+    },
+    {
+      path:"/modifypet/:id",
+      element:<ModifyPet />
+    },
+    {
+      path:"/signup",
+      element:<CreateUser />
     }
 ]
 export default routes;
