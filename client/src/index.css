@@ -165,3 +165,17 @@ body, html {
   text-align: center;
   z-index: 2;
 }
+.btn-group {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px; /* Adjust the value as needed for margin between buttons */
+}
+
+.btn-custom {
+  flex: 1;
+  text-align: center;
+}
+
+.btn-delete {
+  font-size: 0.875rem; /* Smaller font size */
+}

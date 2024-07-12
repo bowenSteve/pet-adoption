@@ -143,7 +143,7 @@ function Navbar() {
       
             <div className="mt-2">
               <span>Don't have an account?</span>
-              <a className="ms-1" href="">Create Account</a>
+              <Link to={"/signup"}><a className="ms-1" href="">Create Account</a></Link>
             </div>
           </form>
         </div>

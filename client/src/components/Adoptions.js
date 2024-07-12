@@ -2,6 +2,7 @@ import { useState, useEffect } from "react"
 import { Link } from 'react-router-dom';
 import LoggedNav from "./LoggedNav";
 import User_pets from "./User_pets"
+import Footer from "./Footer";
 
 function Adoptions(){
 const [pets, setPets]=useState([])
@@ -46,13 +47,13 @@ useEffect(() => {
             <div className="col-md-3" key={index}>
               <div className="card mb-4" style={{ cursor: 'pointer' }}>
                   <div className="card-img-container" style={{ height: '200px', overflow: 'hidden' }}>
-                    <img src='' className="card-img-top" alt={pet.pet.name} />
+                    <img src={pet.pet.image_url} className="card-img-top" alt={pet.pet.name} />
                   </div>
                   <div className="card-body">
                     <h5 className="card-title">{pet.pet.name}</h5>
                     <p className="card-text">Age: {pet.pet.age}</p>
                     <p className="card-text">Breed: {pet.pet.breed}</p>
-                    <p className="card-text">Breed: {pet.pet.description}</p>
+                    <p className="card-text">Description: {pet.pet.description}</p>
                   </div>
               </div>
             </div>
@@ -72,6 +73,7 @@ useEffect(() => {
         </div>
       </div>
       <User_pets />
+        <Footer />
       </div>
     )
 

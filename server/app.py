@@ -8,7 +8,12 @@ import os
 
 from models import db, User, Pet, Adoption
 
-app = Flask(__name__)
+app = Flask(
+    __name__,
+    static_url_path='',
+    static_folder='../client/build',
+    template_folder='../client/build'
+)
 CORS(app)
 app.secret_key = b'Y\xf1Xz\x00\xad|eQ\x80t \xca\x1a\x10K'
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///app.db'
@@ -21,6 +26,10 @@ db.init_app(app)
 
 api = Api(app)
 
+@app.errorhandler(404)
+def not_found(e):
+    return render_template("index.html")
+
 @app.route("/")
 def index():
     return "<h1>Pawfect Match</h1>"
@@ -31,16 +40,16 @@ def logout():
     session.pop('user_id', None)  # Clear the user_id from session
     return jsonify({'message': 'Logged out successfully'}), 200
 
-# @app.route('/user_pets', methods=['GET'])
-# def user_pets():
-#     user_id = session.get('user_id')
-#     if not user_id:
-#         return jsonify({'error': 'User not logged in'}), 401
+@app.route('/user_pets', methods=['GET'])
+def user_pets():
+    user_id = session.get('user_id')
+    if not user_id:
+        return jsonify({'error': 'User not logged in'}), 401
     
-#     user_pets = Pet.query.filter_by(user_id=user_id).all()
-#     pets_list = [pet.to_dict() for pet in user_pets]
+    user_pets = Pet.query.filter_by(user_id=user_id).all()
+    pets_list = [pet.to_dict() for pet in user_pets]
     
-#     return jsonify(pets_list), 200
+    return jsonify(pets_list), 200
     
 class CheckSession(Resource):
 
@@ -88,7 +97,7 @@ class Users(Resource):
         data = request.get_json()
 
         new_user = User(
-            name=data['name'],
+            name=data['username'],
             email=data['email'],
         )
 
@@ -156,14 +165,15 @@ class PetsByID(Resource):
             return pet.to_dict(), 200
         else:
             return {"error": "Pet not found"}, 404
-    def patch(self, id):
+    @app.route("/pets/<int:id>", methods=['PATCH'])
+    def patch(id):
 
         pet = Pet.query.filter_by(id=id).first()
 
         if pet:
 
-            for attr in request.form:
-                setattr(pet, attr, request.form[attr])
+            for attr in request.get_json():
+                setattr(pet, attr, request.get_json()[attr])
 
             db.session.add(pet)
             db.session.commit()
@@ -173,7 +183,8 @@ class PetsByID(Resource):
             return response_dict, 200
         else:
             return {"error": "Pet not found"}, 404
-    def delete(self, id):
+    @app.route("/pets/<int:id>", methods=['DELETE'])
+    def delete(id):
 
         pet = Pet.query.filter_by(id=id).first()
 
@@ -185,7 +196,7 @@ class PetsByID(Resource):
         else:
             return {"error": "Pet not found"}, 404
 
-#api.add_resource(PetsByID, '/pets/<int:id>')
+api.add_resource(PetsByID, '/pets/<int:id>')
 
 
 class Adoptions(Resource):
