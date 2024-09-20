@@ -7,20 +7,29 @@ function Adoptions() {
   const [currentIndex, setCurrentIndex] = useState(0);
 
   useEffect(() => {
-    fetch('/user_pets')
-      .then(res => {
-        if (!res.ok) {
-          throw new Error('Network response was not ok');
-        }
-        return res.json();
-      })
-      .then(data => {
-        setPets(data);
-      })
-      .catch(error => {
-        console.error('Error fetching user adoptions:', error);
-      });
+    const token = localStorage.getItem("token");
+    
+    fetch('/user_pets', {
+      method: 'GET',
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json' 
+      }
+    })
+    .then(res => {
+      if (!res.ok) {
+        throw new Error('Network response was not ok');
+      }
+      return res.json();
+    })
+    .then(data => {
+      setPets(data);
+    })
+    .catch(error => {
+      console.error('Error fetching user pets:', error);
+    });
   }, []);
+  
 
   const nextPets = () => {
     if (currentIndex + 4 < pets.length) {

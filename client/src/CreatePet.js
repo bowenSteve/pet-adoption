@@ -26,10 +26,13 @@ function CreatePet() {
             age: parseInt(formData.age, 10)
         };
 
-        fetch('/pets', {
+        const token = localStorage.getItem("token");
+
+        fetch('http://127.0.0.1:5555/pets', {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
+                "Authorization": `Bearer ${token}` // Add the authorization header
             },
             body: JSON.stringify(dataToSubmit),
         })
@@ -52,12 +55,12 @@ function CreatePet() {
             });
             fetchPets();
             setSuccessMessage('Pet added successfully!');
-            // Clear the success message after 3 seconds
             setTimeout(() => setSuccessMessage(''), 3000);
         })
         .catch(error => {
             console.error('Error adding pet:', error);
         });
+        
     }
 
     useEffect(() => {
@@ -102,6 +105,7 @@ function CreatePet() {
     return (
         <div>
             <LoggedNav />
+            <div>
             {successMessage && (
                 <div className="alert alert-success" role="alert">
                     {successMessage}
@@ -199,7 +203,8 @@ function CreatePet() {
                     </li>
                 ))}
             </ul>
-            <Footer />
+            </div>
+            {/* <Footer /> */}
         </div>
     );
 }

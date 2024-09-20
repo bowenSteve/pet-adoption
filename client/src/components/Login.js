@@ -1,22 +1,20 @@
 import React, { useState } from 'react';
-import { Navigate, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import LoggedNav from './LoggedNav';
 import Footer from './Footer';
+import '../styles/login.css'; 
+import LoginNavB from './LoginNavB';
 
-function CreateUser() {
+function Login() {
   const initialValues = {
-    first_name: '',
-    second_name: '',
     email: '',
     password: '',
   };
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   const validationSchema = Yup.object().shape({
-    first_name: Yup.string().required('First name is required'),
-    second_name: Yup.string().required('Second name is required'),
     email: Yup.string().email('Invalid email').required('Email is required'),
     password: Yup.string().required('Password is required'),
   });
@@ -26,19 +24,20 @@ function CreateUser() {
 
   const handleSubmit = (values, { setSubmitting }) => {
     setIsLoading(true);
-    fetch("/signup", { // Update endpoint to match back end
+    fetch("/login", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(values), // Send all fields
+      body: JSON.stringify(values),
     })
     .then((r) => {
       setIsLoading(false);
       if (r.ok) {
-        return r.json();
-        navigate("/")
-
+        return r.json().then((data) => {
+          localStorage.setItem("token", data.access_token);
+          navigate("/logged");
+        });
       } else {
         return r.json().then((err) => {
           throw new Error(err.message);
@@ -56,10 +55,11 @@ function CreateUser() {
   };
 
   return (
-    <div>
-      <LoggedNav />
-      <div className="container mt-5">
-        <h2>Sign Up</h2>
+    <div className="login-container ">
+      <LoginNavB />
+
+      <div className="container mt-2">
+      <h2 className='mt-2 mb-2'>Welcome to Pawfect Match</h2>
         <Formik
           initialValues={initialValues}
           validationSchema={validationSchema}
@@ -67,18 +67,6 @@ function CreateUser() {
         >
           {({ isSubmitting }) => (
             <Form>
-              <div className="mb-3">
-                <label htmlFor="first_name" className="form-label">First Name</label>
-                <Field type="text" id="first_name" name="first_name" className="form-control" />
-                <ErrorMessage name="first_name" component="div" className="error" />
-              </div>
-
-              <div className="mb-3">
-                <label htmlFor="second_name" className="form-label">Second Name</label>
-                <Field type="text" id="second_name" name="second_name" className="form-control" />
-                <ErrorMessage name="second_name" component="div" className="error" />
-              </div>
-
               <div className="mb-3">
                 <label htmlFor="email" className="form-label">Email</label>
                 <Field type="email" id="email" name="email" className="form-control" />
@@ -90,10 +78,12 @@ function CreateUser() {
                 <Field type="password" id="password" name="password" className="form-control" />
                 <ErrorMessage name="password" component="div" className="error" />
               </div>
-
-              <button type="submit" className="btn btn-primary" disabled={isSubmitting || isLoading}>
-                {isSubmitting || isLoading ? 'Submitting...' : 'Sign Up'}
-              </button>
+            
+              <div className="text-center">
+                <button type="submit" className="btn btn-primary" disabled={isSubmitting || isLoading}>
+                  {isSubmitting || isLoading ? 'Logging in...' : 'Login'}
+                </button>
+              </div>
 
               {errors && (
                 <div className="alert alert-danger mt-3" role="alert">
@@ -109,4 +99,4 @@ function CreateUser() {
   );
 }
 
-export default CreateUser;
+export default Login;

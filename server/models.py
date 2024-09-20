@@ -1,4 +1,5 @@
 from flask_sqlalchemy import SQLAlchemy
+from werkzeug.security import generate_password_hash, check_password_hash
 from sqlalchemy_serializer import SerializerMixin
 from sqlalchemy import MetaData
 from sqlalchemy.orm import validates, relationship
@@ -13,14 +14,22 @@ metadata = MetaData(
 
 db =SQLAlchemy(metadata=metadata)
 
-class User (db.Model,SerializerMixin):
-    __tablename__='users'
+class User(db.Model, SerializerMixin):
+    __tablename__ = 'users'
 
-    id=db.Column(db.Integer, primary_key=True)
-    name=db.Column(db.String, nullable=False)
-    email=db.Column(db.String, unique=True,nullable=False)
+    id = db.Column(db.Integer, primary_key=True)
+    first_name = db.Column(db.String, nullable=False)  
+    second_name = db.Column(db.String, nullable=False)  
+    email = db.Column(db.String, unique=True, nullable=False)
+    password_hash = db.Column(db.String, nullable=False) 
 
-    adoptions=db.relationship('Adoption',back_populates='user')
+    adoptions = db.relationship('Adoption', back_populates='user')
+
+    def set_password(self, password):
+        self.password_hash = generate_password_hash(password)
+
+    def check_password(self, password):
+        return check_password_hash(self.password_hash, password)
 
     serialize_rules = ('-adoptions.user',)
 
@@ -40,7 +49,7 @@ class User (db.Model,SerializerMixin):
          
 
     def __repr__(self):
-        return f'<User {self.name}, {self.email}>'
+        return f'<User {self.first_name}, {self.email}>'
 
 class Pet(db.Model,SerializerMixin):
     __tablename__='pets'

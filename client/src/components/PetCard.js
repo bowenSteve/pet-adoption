@@ -21,23 +21,28 @@ function PetCard() {
         console.error("Error fetching pet data:", err);
       });
 
-    // Fetch current user info
-    fetch('/current_user')
-      .then((res) => {
-        if (res.ok) {
-          return res.json();
-        } else {
-          throw new Error('User not logged in');
-        }
-      })
-      .then((user) => {
-        setCurrentUser(user);
-        //console.log(user);
-      })
-      .catch((err) => {
-        console.error("Error fetching current user data:", err);
-      });
+      const token = localStorage.getItem("token");
+      if (token) {
+        fetch("http://127.0.0.1:5555/current_user", {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        })
+          .then((response) =>
+            response.ok ? response.json() : Promise.reject("Failed to fetch current user")
+          )
+          .then((data) => {
+            if (data.id) {
+              setCurrentUser(data);
+            }
+          })
+          .catch((error) => {
+            console.error("Error fetching current user:", error);
+          });
+      }
   }, [id]);
+  
 console.log(currentUser)
   const toggleFavorite = () => {
     setIsFavorite(!isFavorite);

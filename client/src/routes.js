@@ -6,6 +6,7 @@ import CreatePet from "./CreatePet"
 import Adoptions from "./components/Adoptions";
 import ModifyPet from "./components/ModifyPet"
 import CreateUser from "./components/CreateUser"
+import Login from "./components/Login";
 
 
 const routes = [
@@ -36,6 +37,10 @@ const routes = [
     {
       path:"/modifypet/:id",
       element:<ModifyPet />
+    },
+    {
+      path:"/login",
+      element: <Login />
     },
     {
       path:"/signup",

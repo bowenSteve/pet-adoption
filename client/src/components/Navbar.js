@@ -1,13 +1,12 @@
-import React, { useState} from 'react';
-import {FaPaw } from 'react-icons/fa';
-import { Link } from 'react-router-dom';
-import { useNavigate } from "react-router-dom";
+import React, { useState } from 'react';
+import { FaPaw } from 'react-icons/fa';
+import { Link, useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faRightToBracket } from '@fortawesome/free-solid-svg-icons';
 import { faUser } from '@fortawesome/free-solid-svg-icons';
 
 function Navbar() {
-  const [username, setUsername] = useState('');
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [errors, setErrors] = useState([]);
@@ -22,28 +21,35 @@ function Navbar() {
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({username}),
+      body: JSON.stringify({ email, password }),
     })
-    .then((r) => {
-      setIsLoading(false);
-      if (r.ok) {
-        r.json().then((user) => {
-          setLoggedInUser(user);
-          console.log(user)
-          navigate("/logged");
-        });
-      } else {
-        r.json().then((err) => setErrors(err.errors));
-      }
-    });
+      .then((response) => {
+        setIsLoading(false);
+        if (response.ok) {
+          return response.json();
+        } else {
+          return response.json().then((err) => {
+            setErrors([err.message]);
+            throw new Error(err.message);
+          });
+        }
+      })
+      .then((data) => {
+        setLoggedInUser(data);
+        localStorage.setItem("token", data.access_token); 
+        navigate("/logged");
+      })
+      .catch((error) => {
+        console.error("Login failed:", error);
+      });
   }
-  console.log(loggedInUser)
+
   return (
     <div>
       <nav className="navbar navbar-expand-lg navbar-light custom-navcolor">
-        <a className="navbar-brand" href="#">
-          <Link className='link' to={"/"}><h2 className="ms-3 main-text-color">Pawfect Match<FaPaw /></h2></Link>
-        </a>
+        <Link className='link' to={"/"}>
+          <h2 className="ms-3 main-text-color">Pawfect Match<FaPaw /></h2>
+        </Link>
         <button
           className="navbar-toggler"
           type="button"
@@ -57,9 +63,6 @@ function Navbar() {
         </button>
 
         <div className="collapse navbar-collapse justify-content-between" id="navbarNav">
-          <div className="navbar-nav">
-            {/* This div is empty intentionally to create spacing on the left side */}
-          </div>
           <ul className="navbar-nav">
             <li className="nav-item">
               {loggedInUser ? (
@@ -74,10 +77,10 @@ function Navbar() {
                   data-bs-target="#offcanvasLogin"
                   aria-controls="offcanvasLogin"
                 >
-                     <div className="d-flex align-items-center">
-                  <FontAwesomeIcon icon={faUser} className="me-2" />
-                 <span>Login/Register</span>
-               </div>
+                  <div className="d-flex align-items-center">
+                    <FontAwesomeIcon icon={faUser} className="me-2" />
+                    <span>Login/Register</span>
+                  </div>
                 </a>
               )}
             </li>
@@ -91,7 +94,7 @@ function Navbar() {
         id="offcanvasLogin"
         aria-labelledby="offcanvasLoginLabel"
       >
-        <div className="offcanvas-header">
+        <div className="offcanvas-header ms-auto">
           <h5 className="offcanvas-title" id="offcanvasLoginLabel">
             Login/Register
           </h5>
@@ -105,15 +108,16 @@ function Navbar() {
         <div className="offcanvas-body">
           <form onSubmit={handleLogIn}>
             <div className="mb-3">
-              <label htmlFor="username" className="form-label">
-                Username
+              <label htmlFor="email" className="form-label">
+                Email
               </label>
               <input
-                type="text"
+                type="email"
                 className="form-control"
-                id="username"
-                value={username}
-                onChange={(e) => setUsername(e.target.value)}
+                id="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
               />
             </div>
             <div className="mb-3">
@@ -126,9 +130,10 @@ function Navbar() {
                 id="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
+                required
               />
             </div>
-            <button type="submit" className="btn btn-primary custom-login-btn login-btn logout-btn" style={{ width: '200px' }}>
+            <button type="submit" className="btn btn-primary custom-login-btn login-btn" style={{ width: '200px' }}>
               {isLoading ? 'Loading...' : 'Login'}
             </button>
             {errors.length > 0 && (
@@ -140,10 +145,9 @@ function Navbar() {
                 ))}
               </div>
             )}
-      
             <div className="mt-2">
               <span>Don't have an account?</span>
-              <Link to={"/signup"}><a className="ms-1" href="">Create Account</a></Link>
+              <Link to={"/signup"}><span className="ms-1">Create Account</span></Link>
             </div>
           </form>
         </div>

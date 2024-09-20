@@ -1,17 +1,18 @@
 from app import app
 from models import db, User, Pet, Adoption
+from werkzeug.security import generate_password_hash
 
 with app.app_context():
-
     print("Deleting data...")
+    Adoption.query.delete()
     User.query.delete()
     Pet.query.delete()
-    Adoption.query.delete()
+    
 
     print("Creating users...")
-    user1 = User(name='Stephen Bowen', email='stephen@gmail.com')
-    user2 = User(name='Marion Aluoch', email='marion@gmail.com')
-    user3 = User(name='Dennis Kinyanjui', email='dennis@gmail.com')
+    user1 = User(first_name='Stephen', second_name='Bowen', email='stephen@gmail.com', password_hash=generate_password_hash('password'))
+    user2 = User(first_name='Marion', second_name='Aluoch', email='marion@gmail.com', password_hash=generate_password_hash('password'))
+    user3 = User(first_name='Dennis', second_name='Kinyanjui', email='dennis@gmail.com', password_hash=generate_password_hash('password'))
     users = [user1, user2, user3]
 
     print("Creating pets...")
@@ -36,10 +37,9 @@ with app.app_context():
     pet19 = Pet(name='Lola', pet_type='Dog', breed='Dachshund', age=1, location='KSPCA', image_url='https://cdn.britannica.com/13/234213-050-45F47984/dachshund-dog.jpg',description='')
     pet20 = Pet(name='Milo', pet_type='Dog', breed='Poodle', age=9, location='KSPCA', image_url='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTmnueMINKqoyf835Alf4XNZb1UMmCdeVx7jA&s',description='')
     pets = [pet1, pet2, pet3,pet4,pet5,pet6,pet7,pet8,pet9,pet10,pet11,pet12,pet13,pet14,pet15,pet16,pet17,pet18,pet19,pet20]
-  
 
     print("Creating Adoptions...")
-    adopt1 = Adoption(user= user1, pet=pet1, adoption_date='12/12/2023')
+    adopt1 = Adoption(user=user1, pet=pet1, adoption_date='12/12/2023')
     adopt2 = Adoption(user=user2, pet=pet2, adoption_date='2/02/2024')
     adopt3 = Adoption(user=user3, pet=pet3, adoption_date='15/04/2024')
     adoptions = [adopt1, adopt2, adopt3]
@@ -51,5 +51,3 @@ with app.app_context():
     db.session.commit()
 
     print("Seeding done")
-    
-    

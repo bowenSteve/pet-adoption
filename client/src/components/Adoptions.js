@@ -8,21 +8,30 @@ function Adoptions(){
 const [pets, setPets]=useState([])
 const [currentIndex, setCurrentIndex] = useState(0);
 useEffect(() => {
-    fetch('/user_adoptions')
-        .then(res => {
-            if (!res.ok) {
-                throw new Error('Network response was not ok');
-            }
-            return res.json();
-        })
-        .then(data => {
-            setPets(data);
-            console.log(data)
-        })
-        .catch(error => {
-            console.error('Error fetching user adoptions:', error);
-        });
-}, [])
+  const token = localStorage.getItem("token");
+
+  fetch('http://127.0.0.1:5555/user_adoptions', {
+      method: 'GET',
+      headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json'
+      }
+  })
+  .then(res => {
+      if (!res.ok) {
+          throw new Error('Network response was not ok');
+      }
+      return res.json();
+  })
+  .then(data => {
+      setPets(data);
+      console.log(data);
+  })
+  .catch(error => {
+      console.error('Error fetching user adoptions:', error);
+  });
+}, []);
+
     const newPets = pets.map(pet=>{
         return pet
     })
