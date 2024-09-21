@@ -11,6 +11,7 @@ sqlalchemy-serializer = "*"
 flask-restful = "*"
 flask-jwt-extended = "*"
 psycopg2-binary = "*"
+gunicorn = "*"
 
 [dev-packages]
 
