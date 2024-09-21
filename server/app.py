@@ -8,7 +8,7 @@ from flask_jwt_extended import JWTManager, create_access_token, get_jwt_identity
 import os, random
 from datetime import timedelta
 
-from models import db, User, Pet, Adoption
+from .models import db, User, Pet, Adoption
 
 app = Flask(
     __name__,
@@ -18,7 +18,7 @@ app = Flask(
 )
 CORS(app)
 app.secret_key = b'Y\xf1Xz\x00\xad|eQ\x80t \xca\x1a\x10K'
-app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:password@localhost:5432/pets'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://pets_hoc6_user:IcT0fpcCODagrfTjH1GYa9eUaYKxrr4V@dpg-crn6be88fa8c738a7fsg-a.oregon-postgres.render.com/pets_hoc6'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.json.compact = False
 
