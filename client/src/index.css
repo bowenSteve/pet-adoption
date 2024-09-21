@@ -179,3 +179,8 @@ body, html {
 .btn-delete {
   font-size: 0.875rem; /* Smaller font size */
 }
+.btn-margin{
+  margin-left: 200px;
+}
+
+

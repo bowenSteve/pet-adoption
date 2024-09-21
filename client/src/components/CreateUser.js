@@ -91,7 +91,7 @@ function CreateUser() {
                 <ErrorMessage name="password" component="div" className="error" />
               </div>
 
-              <button type="submit" className="btn btn-primary" disabled={isSubmitting || isLoading}>
+              <button type="submit" className="btn btn-margin mb-2 logout-btn" disabled={isSubmitting || isLoading}>
                 {isSubmitting || isLoading ? 'Submitting...' : 'Sign Up'}
               </button>
 

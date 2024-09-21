@@ -22,7 +22,6 @@
   }
   
   footer {
-    position: fixed; /* Fixes the footer to the bottom */
     bottom: 0;
     left: 0;
     right: 0;

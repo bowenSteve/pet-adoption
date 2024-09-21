@@ -38,12 +38,12 @@ function DisplayPets({ pets }) {
       </div>
       <div className="pagination-container d-flex justify-content-center">
         {currentIndex > 0 && (
-          <button className="btn logout-btn mx-2" onClick={previousPets}>
+          <button className="btn logout-btn mx-2 mb-1" onClick={previousPets}>
             Back
           </button>
         )}
         {currentIndex + 4 < pets.length && (
-          <button className="btn logout-btn mx-2" onClick={nextPets}>
+          <button className="btn logout-btn mx-2 mb-1" onClick={nextPets}>
             Next
           </button>
         )}

@@ -2,8 +2,7 @@ import React, { useState } from 'react';
 import { FaPaw } from 'react-icons/fa';
 import { Link, useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faRightToBracket } from '@fortawesome/free-solid-svg-icons';
-import { faUser } from '@fortawesome/free-solid-svg-icons';
+import { faRightToBracket, faUser } from '@fortawesome/free-solid-svg-icons';
 
 function Navbar() {
   const [email, setEmail] = useState('');
@@ -47,8 +46,8 @@ function Navbar() {
   return (
     <div>
       <nav className="navbar navbar-expand-lg navbar-light custom-navcolor">
-        <Link className='link' to={"/"}>
-          <h2 className="ms-3 main-text-color">Pawfect Match<FaPaw /></h2>
+        <Link className="link navbar-brand ms-3 main-text-color" to={"/"}>
+          <h2>Pawfect Match<FaPaw /></h2>
         </Link>
         <button
           className="navbar-toggler"
@@ -62,8 +61,12 @@ function Navbar() {
           <span className="navbar-toggler-icon"></span>
         </button>
 
-        <div className="collapse navbar-collapse justify-content-between" id="navbarNav">
-          <ul className="navbar-nav">
+        <div className="collapse navbar-collapse">
+          {/* Left-aligned content */}
+          <div className="me-auto"></div>
+
+          {/* Right-aligned content */}
+          <ul className="navbar-nav ms-auto">
             <li className="nav-item">
               {loggedInUser ? (
                 <button type="button" className="btn btn-primary custom-login-btn" style={{ width: '150px' }}>
@@ -77,7 +80,7 @@ function Navbar() {
                   data-bs-target="#offcanvasLogin"
                   aria-controls="offcanvasLogin"
                 >
-                  <div className="d-flex align-items-center">
+                  <div className="d-flex align-items-center ">
                     <FontAwesomeIcon icon={faUser} className="me-2" />
                     <span>Login/Register</span>
                   </div>
@@ -88,16 +91,15 @@ function Navbar() {
         </div>
       </nav>
 
+      {/* Login/Register Offcanvas */}
       <div
-        className="offcanvas offcanvas-end"
+        className="offcanvas offcanvas-end custom-navcolor"
         tabIndex="-1"
         id="offcanvasLogin"
         aria-labelledby="offcanvasLoginLabel"
       >
         <div className="offcanvas-header ms-auto">
-          <h5 className="offcanvas-title" id="offcanvasLoginLabel">
-            Login/Register
-          </h5>
+         
           <button
             type="button"
             className="btn-close"

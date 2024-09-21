@@ -65,7 +65,7 @@ function Adoptions() {
       <div className="container mt-5">
         <div className="row">
           {pets.slice(currentIndex, currentIndex + 4).map((pet, index) => (
-            <div className="col-md-3" key={index}>
+            <div className="col" key={index}>
               <div className="card mb-4" style={{ cursor: 'pointer' }}>
                 <div className="card-img-container" style={{ height: '200px', overflow: 'hidden' }}>
                   <img src={pet.image_url} className="card-img-top" alt={pet.name} />

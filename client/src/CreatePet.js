@@ -188,7 +188,7 @@ function CreatePet() {
                         onChange={handleInputChange}
                     />
                 </div>
-                <button type="submit" className="btn logout-btn">
+                <button type="submit" className="btn logout-btn btn-margin">
                     Add Pet
                 </button>
             </form>
