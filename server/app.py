@@ -8,7 +8,7 @@ from flask_jwt_extended import JWTManager, create_access_token, get_jwt_identity
 import os, random
 from datetime import timedelta
 
-from server.models import db, User, Pet, Adoption
+from .models import db, User, Pet, Adoption
 
 app = Flask(__name__) 
 
@@ -252,4 +252,4 @@ def get_user_adoptions():
 
 
 if __name__ == "__main__":
-    app.run(port=5555, debug=True)
+    app.run(debug=True)
