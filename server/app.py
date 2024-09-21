@@ -8,7 +8,7 @@ from flask_jwt_extended import JWTManager, create_access_token, get_jwt_identity
 import os, random
 from datetime import timedelta
 
-from .models import db, User, Pet, Adoption
+from server.models import db, User, Pet, Adoption
 
 app = Flask(__name__) 
 
