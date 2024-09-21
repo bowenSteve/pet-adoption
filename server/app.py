@@ -10,12 +10,8 @@ from datetime import timedelta
 
 from .models import db, User, Pet, Adoption
 
-app = Flask(
-    __name__,
-    static_url_path='',
-    static_folder='../client/build',
-    template_folder='../client/build'
-)
+app = Flask(__name__) 
+
 CORS(app)
 app.secret_key = b'Y\xf1Xz\x00\xad|eQ\x80t \xca\x1a\x10K'
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://pets_hoc6_user:IcT0fpcCODagrfTjH1GYa9eUaYKxrr4V@dpg-crn6be88fa8c738a7fsg-a.oregon-postgres.render.com/pets_hoc6'
