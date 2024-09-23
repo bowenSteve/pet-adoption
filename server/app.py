@@ -6,9 +6,12 @@ from flask_restful import Api, Resource
 from flask_cors import CORS
 from flask_jwt_extended import JWTManager, create_access_token, get_jwt_identity, jwt_required, get_jwt
 import random
+import sys
+import os
 from datetime import timedelta
 
-from .models import db, User, Pet, Adoption
+sys.path.append(os.path.dirname(os.path.abspath(__file__)))
+from models import db, User, Pet, Adoption
 
 app = Flask(__name__) 
 
