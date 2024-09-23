@@ -5,7 +5,7 @@ from flask import Flask, request, make_response, jsonify, session
 from flask_restful import Api, Resource
 from flask_cors import CORS
 from flask_jwt_extended import JWTManager, create_access_token, get_jwt_identity, jwt_required, get_jwt
-import os, random
+import random
 from datetime import timedelta
 
 from .models import db, User, Pet, Adoption
