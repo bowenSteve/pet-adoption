@@ -10,8 +10,8 @@ import sys
 import os
 from datetime import timedelta
 
-sys.path.append(os.path.dirname(os.path.abspath(__file__)))
-from models import db, User, Pet, Adoption
+
+from .models import db, User, Pet, Adoption
 
 app = Flask(__name__) 
 
