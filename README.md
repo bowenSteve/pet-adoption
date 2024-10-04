@@ -62,13 +62,13 @@ To get a local copy up and running, follow these steps.
 
 1. Clone the repository:
    ```sh
-   git clone   https://github.com/Mariealuoch/Pawfect-Match-Pet-Adoption-Application
+   git clone   https://github.com/bowenSteve/pet-adoption
 
 ### Backend Installation
 
 1. Navigate to the backend directory:
    ```sh
-   cd PAWFECT-MATCH-PET-ADOPTION-APPLICATION/server
+   cd server
 
 2. Download the dependencies:
 
@@ -92,7 +92,7 @@ To get a local copy up and running, follow these steps.
 1. Navigate to the frontend directory:
 
       ```sh
-    cd PAWFECT-MATCH-PET-ADOPTION-APPLICATION/client
+    cd client
 
 
 2. Install the dependencies:
@@ -106,31 +106,4 @@ To get a local copy up and running, follow these steps.
 
     npm start
 
-## Resources
 
--[Project Documentation](https://docs.google.com/document/d/1POZHDXDnvEwZ66R3e-Vtfgmu7WNYFi3ToLNKIm3pShg/edit)
-
-
-## Contributors
-1. Marion Aluoch
-2. Stephen Bowen 
-3. Abdulaziz Abdi 
-4. Abdirizak Farah
-5. Dennis Kinyanjui
-
-
-## Contacts
-
-- marion.aluoch@student.moringaschool.com
-- stephen.bowen@student.moringaschool.com
-- abdulaziz.abdi@student.moringaschool.com
-- abdirizak.farah@student.moringaschool.com
-- dennis.kinyanjui@student.moringaschool.com
-
-
-Project Link: https://github.com/Mariealuoch/Pawfect-Match-Pet-Adoption-Application
-
-## Helpline
- - +254 01392997
- - +254 01392923
- - +254 01392987
